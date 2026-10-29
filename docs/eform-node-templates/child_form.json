@@ -1,0 +1,14 @@
+{
+  "id": "000071zKIPzupQoAPG1Jce3zp_child_form-1",
+  "type": "child_form",
+  "label": "",
+  "hashid": "BrYML60WJFJ8",
+  "display": true,
+  "tooltip": "",
+  "description": "",
+  "childFormConfig": {
+    "childFormId": "000071dMIALtzVdaLaKXFg0ov",
+    "tempComponent_value": [],
+    "childFormCondition_value": "[]"
+  }
+}

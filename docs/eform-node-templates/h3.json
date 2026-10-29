@@ -1,0 +1,28 @@
+{
+  "id": "000071gbIz9UgyLXVM10To3RP_h3-1",
+  "type": "h3",
+  "value": "Xác định khối lượng hoàn thành",
+  "hashid": "ogv9qoye0",
+  "display": true,
+  "tooltip": "",
+  "spellCheck": false,
+  "styleConfig": {
+    "font": "Inter",
+    "color": "",
+    "width": "",
+    "border": {
+      "color": ""
+    },
+    "height": "",
+    "italic": false,
+    "margin": {},
+    "radius": {
+      "uniform": true
+    },
+    "opacity": 100,
+    "padding": {},
+    "alignment": "center",
+    "backgroundColor": ""
+  },
+  "textPosition": "left"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "000061N1IEpTNPDQoxLrFzdP3_divider-1",
+  "type": "divider",
+  "label": "Divider",
+  "value": "",
+  "hashid": "99NAJ0RWgUMW",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": false,
+    "maxLength": "",
+    "minLength": ""
+  },
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none"
+}

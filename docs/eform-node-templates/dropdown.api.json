@@ -1,0 +1,40 @@
+{
+  "type": "dropdown",
+  "code": "",
+  "label": "Dropdown gọi API",
+  "value": null,
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": { "required": false, "mutilChoose": false },
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "dropdownConfig": {
+    "data": {
+      "url": "$KytaSystem services/uaa/api/account-eaccount",
+      "path": "",
+      "method": "get",
+      "header": [ { "key": "Content-Type", "value": "application/json" } ],
+      "payload": "",
+      "timeCache": 0,
+      "field_value": { "label": "orgIn", "value": "orgIn" },
+      "fieldDisplay_value": [ { "label": "orgName", "value": "orgName" } ],
+      "charSeparator": "-",
+      "conditionFilter": [],
+      "feedData": [
+        {
+          "field": { "label": "orgIn", "value": "orgIn" },
+          "elementId": { "label": "Phòng ban", "value": "<formId>_textField-69" }
+        }
+      ],
+      "responseTemplate": "{ id: number; login: string; orgName: string; orgIn: string; }",
+      "isDefaultSelectFirstItem": ""
+    },
+    "allowAddTag": false,
+    "typeGetData_value": { "label": "API", "value": 3 }
+  },
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}

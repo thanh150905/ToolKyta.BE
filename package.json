@@ -1,0 +1,21 @@
+{
+  "name": "form-script-registry",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Tự động hoá các phân hệ Kyta Platform (eForm, eFlow, Email) theo khách hàng × môi trường.",
+  "bin": {
+    "kyta": "bin/kyta.js"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "typecheck": "tsc -p jsconfig.json",
+    "guard": "node bin/kyta.js eform guard"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

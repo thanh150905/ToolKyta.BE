@@ -1,0 +1,28 @@
+{
+  "id": "000071DzIyk0SxA5OKgeJsQQGQ_h2-1",
+  "type": "h2",
+  "value": "THÔNG TIN NHÀ CUNG CẤP",
+  "hashid": "46nXExmK0",
+  "display": true,
+  "tooltip": "",
+  "spellCheck": false,
+  "styleConfig": {
+    "font": "Inter",
+    "color": "#000000",
+    "width": "",
+    "border": {
+      "color": ""
+    },
+    "height": "",
+    "italic": false,
+    "margin": {},
+    "radius": {
+      "uniform": true
+    },
+    "opacity": 100,
+    "padding": {},
+    "alignment": "left",
+    "backgroundColor": ""
+  },
+  "textPosition": "left"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "000071VoIPz2IwlReM2WaI99V9_rich_text_advance-1",
+  "code": "",
+  "type": "rich_text_advance",
+  "label": "Rich text advance 1",
+  "value": {
+    "html": "",
+    "base64": ""
+  },
+  "hashid": "46rrv4kyy",
+  "display": true,
+  "readonly": false,
+  "validate": {
+    "required": false
+  },
+  "placeholder": "",
+  "labelPosition": "above",
+  "richTextConfig": {
+    "height": "300",
+    "fontSize": "",
+    "fontStyle": "",
+    "tabNumber": "",
+    "hideTabFile": false,
+    "hideTabHome": false,
+    "hideTabInsert": false,
+    "formatText_value": [],
+    "useCollaboration": false
+  }
+}

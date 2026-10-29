@@ -1,0 +1,25 @@
+{
+  "id": "0000715yIl8cgQWoMGlOUKK6K_upload_file-1",
+  "code": "",
+  "type": "upload_file",
+  "label": "Upload file",
+  "value": "",
+  "hashid": "r2gvk8oj2",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": false,
+    "maxSizeFile": "",
+    "minSizeFile": "",
+    "mutilChoose": true,
+    "validFileType_value": []
+  },
+  "description": "",
+  "labelPosition": "above",
+  "uploadFileConfig": {
+    "getDataEDrive": false,
+    "defaultFileName": "",
+    "defaultFileSize": ""
+  }
+}

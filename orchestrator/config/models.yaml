@@ -1,0 +1,10 @@
+# Giá dùng để ƯỚC TÍNH chi phí trên dashboard (USD / 1 triệu token) + cửa sổ context + hạn mức gọi/phút + alias LiteLLM.
+# ⚠ Số dưới đây là giữ chỗ — sửa theo bảng giá và hạn mức THẬT của key bạn dùng.
+# rpm: số lượt gọi tối đa mỗi phút cho model đó (toàn đội dùng chung) — bộ điều phối tự giãn cách để khỏi bị 429.
+gemini-2.5-flash: { input: 0.30, output: 2.50, context: 1000000, rpm: 8, provider: gemini, alias: gemini-2.5-flash }
+gemini-2.5-pro:   { input: 1.25, output: 10.00, context: 1000000, rpm: 4, provider: gemini, alias: gemini-2.5-pro }
+claude-coding:    { input: 3.00, output: 15.00, context: 200000, rpm: 40, provider: anthropic, alias: claude-coding }
+gemini-test:      { input: 0.30, output: 2.50, context: 1000000, rpm: 8, provider: gemini, alias: gemini-test }
+gemini-qa:        { input: 1.25, output: 10.00, context: 1000000, rpm: 4, provider: gemini, alias: gemini-qa }
+router-cheap:     { input: 0.30, output: 2.50, context: 1000000, rpm: 8, provider: gemini, alias: router-cheap }
+

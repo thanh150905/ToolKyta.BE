@@ -1,0 +1,135 @@
+{
+  "id": "000071lKIREH0RXR6eq0HqaO9_dropdown-7",
+  "code": "",
+  "type": "dropdown",
+  "label": "Tên tiền tệ",
+  "value": null,
+  "hashid": "ogv6zokl9",
+  "display": true,
+  "subType": "currencyComplex_name",
+  "tooltip": "",
+  "readonly": true,
+  "validate": {
+    "required": true,
+    "mutilChoose": false
+  },
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "dropdownConfig": {
+    "data": [
+      {
+        "id": 1,
+        "label": "Việt Nam Đồng (VND)",
+        "value": "Việt Nam Đồng (VND)"
+      },
+      {
+        "id": 2,
+        "label": "Đô la Mỹ (USD)",
+        "value": "Đô la Mỹ (USD)"
+      },
+      {
+        "id": 3,
+        "label": "Euro (EUR)",
+        "value": "Euro (EUR)"
+      },
+      {
+        "id": 4,
+        "label": "Đô la Úc (AUD)",
+        "value": "Đô la Úc (AUD)"
+      },
+      {
+        "id": 5,
+        "label": "Đô la Canada (CAD)",
+        "value": "Đô la Canada (CAD)"
+      },
+      {
+        "id": 6,
+        "label": "Bảng Anh (GBP)",
+        "value": "Bảng Anh (GBP)"
+      },
+      {
+        "id": 7,
+        "label": "Đô la Hồng Kông (HKD)",
+        "value": "Đô la Hồng Kông (HKD)"
+      },
+      {
+        "id": 8,
+        "label": "Yên Nhật (JPY)",
+        "value": "Yên Nhật (JPY)"
+      },
+      {
+        "id": 9,
+        "label": "Won Hàn Quốc (KRW)",
+        "value": "Won Hàn Quốc (KRW)"
+      },
+      {
+        "id": 10,
+        "label": "Kip Lào (LAK)",
+        "value": "Kip Lào (LAK)"
+      },
+      {
+        "id": 11,
+        "label": "Nhân dân tệ Trung Quốc (CNY)",
+        "value": "Nhân dân tệ Trung Quốc (CNY)"
+      },
+      {
+        "id": 12,
+        "label": "Sol Peru (PEN)",
+        "value": "Sol Peru (PEN)"
+      },
+      {
+        "id": 13,
+        "label": "Rúp Nga (RUB)",
+        "value": "Rúp Nga (RUB)"
+      },
+      {
+        "id": 14,
+        "label": "Đô la Singapore (SGD)",
+        "value": "Đô la Singapore (SGD)"
+      },
+      {
+        "id": 15,
+        "label": "Baht Thái Lan (THB)",
+        "value": "Baht Thái Lan (THB)"
+      },
+      {
+        "id": 16,
+        "label": "Riel Campuchia (KHR)",
+        "value": "Riel Campuchia (KHR)"
+      },
+      {
+        "id": 17,
+        "label": "Vàng SJC (mã đặc biệt SJC)",
+        "value": "Vàng SJC (mã đặc biệt SJC)"
+      },
+      {
+        "id": 18,
+        "label": "Vàng 14K (mã đặc biệt V14)",
+        "value": "Vàng 14K (mã đặc biệt V14)"
+      },
+      {
+        "id": 19,
+        "label": "Vàng 18K (mã đặc biệt V18)",
+        "value": "Vàng 18K (mã đặc biệt V18)"
+      },
+      {
+        "id": 20,
+        "label": "Vàng 24K (mã đặc biệt V24)",
+        "value": "Vàng 24K (mã đặc biệt V24)"
+      },
+      {
+        "id": 21,
+        "label": "Vàng trang sức (mã đặc biệt VTR)",
+        "value": "Vàng trang sức (mã đặc biệt VTR)"
+      }
+    ],
+    "typeGetData_value": {
+      "label": "Nhập dữ liệu",
+      "value": 1
+    }
+  },
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}

@@ -1,0 +1,24 @@
+{
+  "id": "000071BXI56hgOKbnLpPIxWz4_buttonElement-1",
+  "type": "buttonElement",
+  "label": "Button",
+  "value": "",
+  "hashid": "x6rN9GWDyfyv",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "description": "",
+  "textPosition": "left",
+  "buttonElementConfig": {
+    "dataConfig": {
+      "dataMapping": [],
+      "formPopupId": ""
+    },
+    "buttonStyle": {
+      "size": "sm",
+      "color": "#ffffff",
+      "backgroundColor": "#1976d2"
+    },
+    "buttonDataType": "popup"
+  }
+}

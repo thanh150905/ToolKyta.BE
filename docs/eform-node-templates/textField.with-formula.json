@@ -1,0 +1,68 @@
+{
+  "id": "000071VoIPz2IwlReM2WaI99V9_textField-22",
+  "code": "",
+  "slug": null,
+  "type": "textField",
+  "label": "Họ và tên",
+  "value": "",
+  "hashid": "y7dgk9lar",
+  "display": true,
+  "formula": {
+    "expression_value": [
+      {
+        "type": "func",
+        "value": "concatenate"
+      },
+      {
+        "type": "number",
+        "value": "("
+      },
+      {
+        "type": "variable",
+        "value": "000071VoIPz2IwlReM2WaI99V9_textField-26"
+      },
+      {
+        "type": "number",
+        "value": ","
+      },
+      {
+        "type": "text",
+        "value": " "
+      },
+      {
+        "type": "number",
+        "value": ","
+      },
+      {
+        "type": "variable",
+        "value": "000071VoIPz2IwlReM2WaI99V9_textField-27"
+      },
+      {
+        "type": "number",
+        "value": ")"
+      }
+    ]
+  },
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": true,
+    "maxLength": "",
+    "minLength": "",
+    "messErrorForRegex": "",
+    "listSelectedRegex_value": []
+  },
+  "inputType": "text",
+  "renderMode": "builtin",
+  "spellCheck": false,
+  "allowRecord": false,
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false,
+  "_hasCustomUI": true
+}

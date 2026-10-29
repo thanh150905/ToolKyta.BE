@@ -1,0 +1,141 @@
+{
+  "id": "0000715yIl8cgQWoMGlOUKK6K_table_advance-1",
+  "code": "",
+  "type": "table_advance",
+  "label": "Table",
+  "value": "",
+  "hashid": "j8nplpaw8",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "renderMode": "custom_code",
+  "description": "",
+  "labelPosition": "above",
+  "tableAdvanceConfig": {
+    "allowAddRow": false,
+    "column_value": [
+      {
+        "type": "text",
+        "title": "NHÓM TIÊU CHÍ / TIÊU CHÍ"
+      },
+      {
+        "type": "text",
+        "title": "TRỌNG SỐ"
+      },
+      {
+        "type": "text",
+        "title": "ĐIỂM CHUẨN"
+      },
+      {
+        "type": "text",
+        "title": "HỆ THỐNG ĐG"
+      },
+      {
+        "type": "text",
+        "title": "ĐIỂM TỰ ĐG"
+      },
+      {
+        "type": "text",
+        "title": "CẤP TRÊN ĐG"
+      },
+      {
+        "type": "text",
+        "title": "XẾP LOẠI"
+      }
+    ],
+    "fixedRowsTop": 0,
+    "defaultHeight": null,
+    "cellType_value": {},
+    "dataCell_value": [
+      [
+        "::group::1. Phẩm chất chính trị, phẩm chất đạo đức, phong cách",
+        "30%",
+        "30",
+        "-",
+        "",
+        "",
+        ""
+      ],
+      [
+        "1.1. Chấp hành đường lối, chủ trương của Đảng...",
+        "10%",
+        "10",
+        "::api::",
+        "",
+        "",
+        ""
+      ],
+      [
+        "1.2. Có tinh thần trách nhiệm, kỷ luật...",
+        "10%",
+        "10",
+        "::api::",
+        "",
+        "",
+        ""
+      ],
+      [
+        "1.3. Có phẩm chất đạo đức, lối sống...",
+        "10%",
+        "10",
+        "::api::",
+        "",
+        "",
+        ""
+      ],
+      [
+        "::group::2. Kết quả thực hiện nhiệm vụ chuyên môn",
+        "70%",
+        "70",
+        "-",
+        "",
+        "",
+        ""
+      ],
+      [
+        "2.1. Hoàn thành khối lượng công việc...",
+        "35%",
+        "35",
+        "::api::",
+        "",
+        "",
+        ""
+      ],
+      [
+        "2.2. Chất lượng công việc...",
+        "35%",
+        "35",
+        "::api::",
+        "",
+        "",
+        ""
+      ],
+      [
+        "::total::Tổng cộng",
+        "100%",
+        "100",
+        "-",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "hideCols_value": [],
+    "hideRows_value": [],
+    "mergeCell_value": [],
+    "allowOverideStyle": false,
+    "allowResizeHeight": false,
+    "bindingCell_value": {},
+    "fixedColumnsStart": 0,
+    "readonlyCell_value": [],
+    "advanceMethodConfig": {
+      "cellsBinding": [],
+      "formVersionId": "",
+      "isAdvanceMethod": false
+    },
+    "classCustomCell_value": {},
+    "sourceDropdownType_value": {}
+  },
+  "metaSearchOnRequest": false,
+  "_hasCustomUI": true
+}

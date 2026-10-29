@@ -1,0 +1,46 @@
+{
+  "_doc": "Cấu hình chung (commit được, KHÔNG chứa bí mật). Host eflow/ewriter/ecatalog/eworkspace/account có thể khai riêng; service nào hỗ trợ suy host thì suy tiền tố từ eform.",
+
+  "envs": {
+    "dev": {
+      "eworkspace": "http://10.14.121.10/eworkspace/services",
+      "account": "http://10.14.121.10/eaccount"
+    },
+    "sandbox": {
+      "eform": "https://eform.sandbox.kytaplatform.com",
+      "eworkspace": "https://econtract.sandbox.kytaplatform.com/workspace/services",
+      "portal": "https://erequest.sandbox.kytaplatform.com"
+    },
+    "uat": {},
+    "prod": {
+      "eform": "https://eform.kyta.fpt.com",
+      "eworkspace": "https://erequest.kyta.fpt.com/workspace/services",
+      "portal": "https://erequest.kyta.fpt.com"
+    },
+    "demo": {
+      "eform": "https://demo.eform.kyta.fpt.com",
+      "eworkspace": "https://demo.workspace.kyta.fpt.com/services"
+    }
+  },
+
+  "customers": {
+    "sabeco@uat": { "eform": "https://eform-uat.sabeco-app.vn", "account": "https://eaccount-uat.sabeco-app.vn" },
+    "sabeco@prod": { "eform": "https://eform.sabeco-app.vn", "account": "https://eaccount.sabeco-app.vn" }
+  },
+
+  "auth": {
+    "loginPath": "/auth/login",
+    "method": "POST",
+    "bodyTemplate": {
+      "username": "{{username}}",
+      "password": "{{password}}",
+      "rememberMe": true,
+      "signinType": null,
+      "otp": null,
+      "contactTrace": "{\"ip\":null,\"location\":null,\"deviceName\":null,\"deviceId\":null,\"timeTrace\":null,\"type\":null,\"latLong\":null,\"browser\":null,\"osVersion\":null}"
+    },
+    "authScheme": "auto",
+    "tokenBodyKeys": ["id_token", "token", "access_token", "accessToken", "jwt"],
+    "defaultTtlMinutes": 30
+  }
+}

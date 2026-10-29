@@ -1,0 +1,29 @@
+{
+  "id": "000071VoIPz2IwlReM2WaI99V9_datepicker-1",
+  "code": "",
+  "type": "datepicker",
+  "label": "Ngày lập biên bản",
+  "value": "",
+  "hashid": "mqWJLjjo9",
+  "display": true,
+  "formula": {
+    "expression_value": []
+  },
+  "tooltip": "",
+  "readonly": true,
+  "validate": {
+    "locale": "vi",
+    "maxDate": "",
+    "minDate": "",
+    "required": true,
+    "formatDate": "DD/MM/YYYY"
+  },
+  "description": "",
+  "placeholder": "",
+  "useDateLocal": false,
+  "labelPosition": "above",
+  "textTransform": "none",
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false,
+  "allowOverrideUseDateLocal": false
+}

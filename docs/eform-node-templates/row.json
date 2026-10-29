@@ -1,0 +1,8 @@
+{
+  "type": "row",
+  "label": "row",
+  "width": "100%",
+  "display": true,
+  "placeholder": "row",
+  "components": []
+}

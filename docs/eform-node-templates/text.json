@@ -1,0 +1,29 @@
+{
+  "id": "000071VoIPz2IwlReM2WaI99V9_text-6",
+  "type": "text",
+  "value": "Nhà thầu bổ sung cam kết trình bày phần mềm để chứng minh tính đáp ứng yêu cầu kỹ thuật",
+  "hashid": "Rlv94JJ9O",
+  "display": true,
+  "tooltip": "",
+  "spellCheck": false,
+  "styleConfig": {
+    "font": "Inter",
+    "color": "",
+    "width": "",
+    "border": {
+      "color": ""
+    },
+    "height": "",
+    "italic": true,
+    "margin": {},
+    "radius": {
+      "uniform": true
+    },
+    "opacity": 100,
+    "padding": {},
+    "fontSize": 12,
+    "alignment": "left",
+    "backgroundColor": ""
+  },
+  "textPosition": "left"
+}

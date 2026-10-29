@@ -1,0 +1,8 @@
+#!/bin/sh
+# Chặn commit nhầm môi trường (formId trong code phải khớp env của thư mục).
+# Bật 1 lần mỗi máy:  git config core.hooksPath .githooks
+command -v node >/dev/null 2>&1 || exit 0
+node "$(git rev-parse --show-toplevel)/bin/kyta.js" eform guard || {
+  printf "\n✗ pre-commit bị chặn do lệch môi trường. Sửa vị trí file hoặc chạy: kyta eform registry\n"
+  exit 1
+}

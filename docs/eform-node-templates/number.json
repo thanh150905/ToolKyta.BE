@@ -1,0 +1,31 @@
+{
+  "id": "000071bBIoqcQ5adneWlt88a8_number-1",
+  "code": "",
+  "type": "number",
+  "label": "Giá trị hợp đồng (VNĐ, bao gồm VAT)",
+  "value": null,
+  "hashid": "k2xRlZ0LJ",
+  "display": true,
+  "formula": {
+    "expression_value": []
+  },
+  "tooltip": "",
+  "currency": "vi-VN",
+  "readonly": true,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": true,
+    "maxLength": "",
+    "minLength": "",
+    "decimalPlace": "",
+    "requireDecimal": false
+  },
+  "inputType": "text",
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}

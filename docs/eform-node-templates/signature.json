@@ -1,0 +1,20 @@
+{
+  "id": "000071arIb5s5wW8wpK6tlrBn_signature-1",
+  "code": "",
+  "type": "signature",
+  "label": "Người lập (Ký xác nhận)",
+  "value": "",
+  "hashid": "28pJLpk7v",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": true
+  },
+  "description": "",
+  "textPosition": "left",
+  "labelPosition": "above",
+  "signatureConfig": {
+    "typeSignature": null
+  }
+}

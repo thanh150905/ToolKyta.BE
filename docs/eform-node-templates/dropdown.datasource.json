@@ -1,0 +1,46 @@
+{
+  "id": "000071arIb5s5wW8wpK6tlrBn_dropdown-1",
+  "code": "",
+  "type": "dropdown",
+  "label": "Mã dự án",
+  "value": null,
+  "hashid": "LZpBxp9Z4",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": true,
+    "mutilChoose": false
+  },
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "dropdownConfig": {
+    "data": {
+      "url": "6a8024df2c83e233fe0079da",
+      "feedData": [],
+      "field_value": {
+        "label": "WBS Element",
+        "value": "textField_input-1"
+      },
+      "charSeparator": "-",
+      "conditionFilter": [],
+      "fieldDisplay_value": [
+        {
+          "label": "Project ID",
+          "value": "textField_input-1"
+        }
+      ],
+      "isGetAllCatalogData": false,
+      "isDefaultSelectFirstItem": ""
+    },
+    "allowAddTag": false,
+    "typeGetData_value": {
+      "label": "formElement.setting.dropdown.source_data_list.text_3",
+      "value": 4
+    }
+  },
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}

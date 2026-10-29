@@ -1,0 +1,25 @@
+{
+  "id": "000071gbIgKTgwy5J1NBcR9ep_email-1",
+  "code": "",
+  "type": "email",
+  "label": "Email Checker",
+  "value": "",
+  "hashid": "EqVRM1N6mI97",
+  "display": true,
+  "tooltip": "",
+  "readonly": true,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": false,
+    "maxLength": "",
+    "minLength": ""
+  },
+  "inputType": "text",
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}

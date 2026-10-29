@@ -1,0 +1,15 @@
+{
+  "id": "000071gbIgKTgwy5J1NBcR9ep_numbered_list-1",
+  "type": "numbered_list",
+  "value": "",
+  "hashid": "PjVNo7M0DHv4",
+  "display": true,
+  "tooltip": "",
+  "spellCheck": false,
+  "numberedList_value": [
+    "capexa: <30M",
+    "capexbc: <=300M",
+    "capexd: <=800M",
+    "capexe:>800M"
+  ]
+}

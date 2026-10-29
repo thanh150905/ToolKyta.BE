@@ -1,0 +1,332 @@
+{
+  "info": {
+    "_postman_id": "b7e1c0a2-9d3f-4c58-a1e2-9f0c3d5a7b10",
+    "name": "Kyta Platform API",
+    "description": "Bộ sưu tập quản lý API Kyta Platform theo phân hệ.\n\n- Auth dùng Bearer token ở cấp collection: điền biến `token`.\n- Mỗi phân hệ là 1 folder; request để trống, sẽ bổ sung sau.\n- Host theo biến `host_<phân hệ>` (mặc định môi trường sandbox). Đổi sang uat/prod bằng cách sửa biến hoặc dùng Environment riêng.\n- Quy ước URL request sau này: `{{host_<phân hệ>}}<base path>/<endpoint>`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ]
+  },
+  "variable": [
+    { "key": "token", "value": "", "type": "string", "description": "Bearer token (lấy từ Auth / login)" },
+    { "key": "customer", "value": "saigoncoop", "type": "string" },
+    { "key": "env", "value": "sandbox", "type": "string" },
+    { "key": "login_email", "value": "kyta_kntc@gmail.com", "type": "string", "description": "Email tài khoản cần lấy token" },
+    { "key": "resource_id", "value": "000010k6iaiqWAKWgwvFMK2", "type": "string", "description": "resourceId/lookup cho excall get_token_by_email" },
+    { "key": "form_id", "value": "", "type": "string", "description": "formId đang thao tác (eform)" },
+    { "key": "org_id", "value": "", "type": "string", "description": "orgId phòng ban (eaccount/uaa)" },
+    { "key": "ticket_id", "value": "000078DIEqu16q5oWxA", "type": "string", "description": "ticketId của yêu cầu (erequest)" },
+    { "key": "cookie_full", "value": "", "type": "string", "description": "Cookie đầy đủ (nếu endpoint cần); có thể để trống khi đã có Bearer token" },
+    { "key": "internal_token", "value": "", "type": "string", "description": "Token dịch vụ nội bộ (excall_internal) — đặt RAW vào header Authorization, KHÔNG có tiền tố 'Bearer '" },
+    { "key": "host_econtract", "value": "https://econtract.sandbox.kytaplatform.com", "type": "string" },
+    { "key": "kyta_sand_host", "value": "", "type": "string", "description": "CẦN CUNG CẤP: host gateway sandbox dùng cho path /services/.../p/... (khác host_econtract vốn có tiền tố /app)" },
+    { "key": "host_eaccount", "value": "https://eaccount.sandbox.kytaplatform.com", "type": "string" },
+    { "key": "host_eform", "value": "https://eform.sandbox.kytaplatform.com", "type": "string" },
+    { "key": "host_eflow", "value": "https://eflow.sandbox.kytaplatform.com", "type": "string" },
+    { "key": "host_erequest", "value": "https://erequest.sandbox.kytaplatform.com", "type": "string" },
+    { "key": "host_ecatalog", "value": "", "type": "string", "description": "CẦN CUNG CẤP: host ecatalog" },
+    { "key": "host_ewriter", "value": "", "type": "string", "description": "CẦN CUNG CẤP: host ewriter" }
+  ],
+  "item": [
+    {
+      "name": "00 · Auth & Session",
+      "description": "Đăng nhập lấy token/cookie. Token dùng cross-host sang eform/eflow qua SSO idaas.",
+      "item": [
+        {
+          "name": "Lấy access token theo email (excall get_token_by_email)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": {\n    \"resourceId\": \"{{resource_id}}\",\n    \"email\": \"{{login_email}}\"\n  },\n  \"lookup\": \"{{resource_id}}\",\n  \"selector\": \"get_token_by_email\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{host_econtract}}/app/services/excall-internal/api/p/excall",
+              "host": [ "{{host_econtract}}" ],
+              "path": [ "app", "services", "excall-internal", "api", "p", "excall" ]
+            },
+            "description": "Lấy access token của một tài khoản bất kỳ theo email, qua gateway excall-internal (selector get_token_by_email).\n\nTrường tuỳ chọn (bỏ trống được): attrs, id, payload, refId.\nresourceId = lookup = {{resource_id}}. Đổi tài khoản bằng biến {{login_email}}.\nRequest này KHÔNG dùng Bearer (chưa có token)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "eaccount",
+      "description": "Tài khoản, người dùng, tổ chức. Host: {{host_eaccount}}.\nBase path: /services/uaa/api (tài khoản/tổ chức), /auth (đăng nhập).",
+      "item": [
+        {
+          "name": "Xoá phòng ban (organization)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json, text/plain, */*" },
+              { "key": "Cookie", "value": "{{cookie_full}}", "description": "Tuỳ chọn; để trống nếu dùng Bearer" }
+            ],
+            "url": {
+              "raw": "{{host_eaccount}}/services/uaa/api/organizations/{{org_id}}",
+              "host": [ "{{host_eaccount}}" ],
+              "path": [ "services", "uaa", "api", "organizations", "{{org_id}}" ]
+            },
+            "description": "Xoá phòng ban/tổ chức theo orgId. Cần Bearer token (kế thừa collection). Cookie tuỳ endpoint."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "uaa",
+      "description": "User / role / tổ chức dùng chung. Base path (đã xác minh): /services/uaa/api (vd /roles/search, /search/userInfoModel).",
+      "item": [
+        {
+          "name": "Xem thông tin account (authentication/internal)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Cookie", "value": "{{cookie_full}}", "description": "Tuỳ chọn; để trống nếu dùng Bearer" }
+            ],
+            "url": {
+              "raw": "{{host_econtract}}/app/services/uaa/api/authentication/internal?login={{login_email}}",
+              "host": [ "{{host_econtract}}" ],
+              "path": [ "app", "services", "uaa", "api", "authentication", "internal" ],
+              "query": [ { "key": "login", "value": "{{login_email}}", "description": "Email/login của account cần xem" } ]
+            },
+            "description": "Xem thông tin 1 account theo login (email) qua gateway econtract. Cần Bearer token (kế thừa collection).\n(Token & cookie thật trong curl gốc KHÔNG lưu ở đây — dùng {{token}}/{{cookie_full}}.)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "eform",
+      "description": "Biểu mẫu (form, field, code động, custom UI, điều kiện). Host: {{host_eform}}.\nBase path (đã xác minh): /services/eform/api.",
+      "item": [
+        {
+          "name": "Xoá form",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host_eform}}/services/eform/api/forms/{{form_id}}",
+              "host": [ "{{host_eform}}" ],
+              "path": [ "services", "eform", "api", "forms", "{{form_id}}" ]
+            },
+            "description": "Xoá hẳn 1 form theo formId. Khó hoàn tác. Cần Bearer token (kế thừa từ collection)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ecatalog",
+      "description": "Nguồn dữ liệu / danh mục (dropdown datasource tham chiếu qua catalog id). Host: {{host_ecatalog}} — CẦN CUNG CẤP.\nBase path: CẦN CUNG CẤP.",
+      "item": []
+    },
+    {
+      "name": "erequest",
+      "description": "Cổng yêu cầu / ticket. Truy cập qua gateway econtract: {{host_econtract}}/app/services/erequest/api (curl thật dùng đường này, không phải host_erequest).",
+      "item": [
+        {
+          "name": "Xem data form (get-sub-form-data)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticketId\": \"{{ticket_id}}\",\n  \"version\": null\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{host_econtract}}/app/services/erequest/api/ticket-sub-form-data/get-sub-form-data",
+              "host": [ "{{host_econtract}}" ],
+              "path": [ "app", "services", "erequest", "api", "ticket-sub-form-data", "get-sub-form-data" ]
+            },
+            "description": "Lấy dữ liệu đã nhập của form theo ticket. Body tuỳ chọn: userTaskId (sid-...) để lấy đúng bước. version=null = mới nhất.\nGọi qua gateway econtract, không cần Bearer (như curl gốc)."
+          },
+          "response": []
+        },
+        {
+          "name": "Cập nhật data form (không tăng version)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{host_econtract}}/app/services/erequest/api/ticket-form-data/internal/saveFormDataNotUpdateVersion",
+              "host": [ "{{host_econtract}}" ],
+              "path": [ "app", "services", "erequest", "api", "ticket-form-data", "internal", "saveFormDataNotUpdateVersion" ]
+            },
+            "description": "Lưu dữ liệu form mà KHÔNG tăng version của form. Gọi qua gateway econtract (nội bộ), không Bearer.\nBody (payload form data) sẽ bổ sung sau — hiện để trống theo curl gốc."
+          },
+          "response": []
+        },
+        {
+          "name": "Save force form data",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{kyta_sand_host}}/services/erequest/api/p/ticket-sub-form-data/save-force-form-data",
+              "host": [ "{{kyta_sand_host}}" ],
+              "path": [ "services", "erequest", "api", "p", "ticket-sub-form-data", "save-force-form-data" ]
+            },
+            "description": "Lưu ép (force) dữ liệu form. Host dùng biến {{kyta_sand_host}} theo curl gốc (khác econtract/app). Path có /p/ (public) → không Bearer. Body payload bổ sung sau."
+          },
+          "response": []
+        },
+        {
+          "name": "Restart notion (callbackEventSuccessByType)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Cookie", "value": "{{cookie_full}}", "description": "Tuỳ chọn; để trống nếu dùng Bearer" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resourceId\": \"00007WBIydvSaQVxRQXB\",\n  \"recipientId\": \"sid-13219CC8-534B-41EA-9100-C383BDBBA610\",\n  \"eventType\": \"recipient_started\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{host_erequest}}/services/workboard/api/notify-events/callbackEventSuccessByType",
+              "host": [ "{{host_erequest}}" ],
+              "path": [ "services", "workboard", "api", "notify-events", "callbackEventSuccessByType" ]
+            },
+            "description": "Bắn lại (restart) sự kiện notify của workboard theo type — vd eventType=recipient_started cho một recipientId (sid-...). Dịch vụ workboard qua host erequest. Cần Bearer token (kế thừa collection).\nresourceId/recipientId/eventType là giá trị mẫu, sửa theo nhu cầu.\n(Token & cookie thật trong curl gốc KHÔNG được lưu ở đây — dùng {{token}}/{{cookie_full}}.)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get thông tin ticket",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host_econtract}}/app/services/erequest/api/tickets/{{ticket_id}}",
+              "host": [ "{{host_econtract}}" ],
+              "path": [ "app", "services", "erequest", "api", "tickets", "{{ticket_id}}" ]
+            },
+            "description": "Lấy thông tin 1 ticket theo ticketId, qua gateway econtract (không Bearer như curl gốc)."
+          },
+          "response": []
+        },
+        {
+          "name": "Lock ticket",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "{{internal_token}}", "description": "Token nội bộ excall_internal, RAW (không có 'Bearer ')" }
+            ],
+            "url": {
+              "raw": "{{host_econtract}}/app/services/erequest/api/tickets/lock/{{ticket_id}}",
+              "host": [ "{{host_econtract}}" ],
+              "path": [ "app", "services", "erequest", "api", "tickets", "lock", "{{ticket_id}}" ]
+            },
+            "description": "Khoá 1 ticket theo ticketId, qua gateway econtract. Auth dùng token nội bộ RAW ở header Authorization ({{internal_token}}), KHÔNG phải Bearer thường.\n(Token thật trong curl gốc KHÔNG lưu ở đây.)"
+          },
+          "response": []
+        },
+        {
+          "name": "Unlock ticket",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://econtract.sandbox.kytaplatform.com/app/services/erequest/api/tickets/unlock/00006XrIezHveQ0bkqd",
+              "host": [ "econtract", "sandbox", "kytaplatform", "com" ],
+              "path": [ "app", "services", "erequest", "api", "tickets", "unlock", "00006XrIezHveQ0bkqd" ]
+            },
+            "description": "Mở khoá ticket theo curl gốc qua gateway econtract. Request không có header, body hoặc Bearer token."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel ticket",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "https://econtract.sandbox.kytaplatform.com/app/services/erequest/api/tickets/cancelFlow?ticketId=000068DI5xvi1X8wdqno&reason=%C4%90%C3%ACnh_ch%E1%BB%89_gi%E1%BA%A3i_quy%E1%BA%BFt_t%E1%BB%91_c%C3%A1o",
+              "host": [ "econtract", "sandbox", "kytaplatform", "com" ],
+              "path": [ "app", "services", "erequest", "api", "tickets", "cancelFlow" ],
+              "query": [
+                { "key": "ticketId", "value": "000068DI5xvi1X8wdqno" },
+                { "key": "reason", "value": "Đình_chỉ_giải_quyết_tố_cáo" }
+              ]
+            },
+            "description": "Huỷ luồng ticket qua gateway econtract. PUT với body rỗng như curl gốc; ticketId và reason được truyền qua query string."
+          },
+          "response": []
+        },
+        {
+          "name": "Get info notion (getInternalByTicketId)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "https://econtract.sandbox.kytaplatform.com/app/services/erequest/api/p/recipient-details/getInternalByTicketId/00006DzIpgXcx4Kbde2q/sid-621EA47E-8792-4394-9157-876650CA7C8D",
+              "host": [ "econtract", "sandbox", "kytaplatform", "com" ],
+              "path": [ "app", "services", "erequest", "api", "p", "recipient-details", "getInternalByTicketId", "00006DzIpgXcx4Kbde2q", "sid-621EA47E-8792-4394-9157-876650CA7C8D" ]
+            },
+            "description": "Lấy thông tin notion theo ticketId và userTaskId qua gateway econtract. Dùng POST với body rỗng như curl gốc; endpoint /p/ không kèm auth."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "eflow",
+      "description": "Quy trình (modeler, người thực hiện). Host: {{host_eflow}}.\nBase path (đã xác minh): /services/idaas-eflow/api.",
+      "item": []
+    },
+    {
+      "name": "eNotify",
+      "description": "Thông báo / cấu hình mail theo quy trình (template-config-mails). Thường cùng host eflow.\nBase path: /services/idaas-eflow/api (template-config-mails).",
+      "item": []
+    },
+    {
+      "name": "email-template",
+      "description": "Mẫu email. Host: {{host_eaccount}}.\nBase path (đã xác minh): /services/email-template/api.",
+      "item": []
+    },
+    {
+      "name": "ewriter",
+      "description": "Kho bản in .docx. Host: {{host_ewriter}} — CẦN CUNG CẤP.\nBase path: CẦN CUNG CẤP.",
+      "item": []
+    }
+  ]
+}

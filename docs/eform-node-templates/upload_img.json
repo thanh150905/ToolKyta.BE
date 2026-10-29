@@ -1,0 +1,28 @@
+{
+  "id": "000071arIb5s5wW8wpK6tlrBn_upload_img-1",
+  "code": "",
+  "type": "upload_img",
+  "label": ".",
+  "value": "https://sandbox-2026-kyta-eform-attachment-hn2.s3-han02.fptcloud.com/anonymous/20260814/1786699517370_Logo-BM-Windows-1024x819.png",
+  "hashid": "J8nXvn68o",
+  "display": true,
+  "tooltip": "",
+  "readonly": true,
+  "validate": {
+    "required": false,
+    "maxSizeFile": "",
+    "minSizeFile": ""
+  },
+  "description": "",
+  "labelPosition": "above",
+  "uploadFileConfig": {
+    "width": "",
+    "height": "",
+    "autoSetSize": false,
+    "defaultZoom": "50",
+    "enableUploadImg": true,
+    "defaultFillColor": "",
+    "defaultLineWidth": "",
+    "defaultStrokeColor": ""
+  }
+}

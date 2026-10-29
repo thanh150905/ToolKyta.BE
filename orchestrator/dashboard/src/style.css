@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-bg: #060708;
+  --color-panel: #0b0d10;
+  --color-panel2: #101318;
+  --color-line: #1d222b;
+  --color-line2: #2a303b;
+  --color-ink: #d7dbe2;
+  --color-mute: #7d8594;
+  --color-dim: #525a67;
+  --color-accent: #3b82f6;
+  --color-work: #f5b53d;
+  --color-ok: #22c55e;
+  --color-bad: #ef4444;
+  --color-ios: #0a84ff;
+  --color-bubble: #1f2126;
+  --animate-glow: glow 1.6s ease-in-out infinite;
+  --animate-ring: ring 1.8s cubic-bezier(.2,.7,.3,1) infinite;
+  --animate-pop: pop .55s cubic-bezier(.2,1.6,.4,1) both;
+  --animate-shake: shake .45s ease-in-out both;
+  --animate-rise: rise .32s cubic-bezier(.2,.8,.3,1) both;
+  --animate-dot: dot 1.2s ease-in-out infinite;
+  @keyframes ring {
+    0% { transform: scale(1); opacity: .55; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+  @keyframes pop {
+    0% { transform: scale(.4); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  @keyframes rise {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes dot {
+    0%, 80%, 100% { transform: translateY(0); opacity: .35; }
+    40% { transform: translateY(-4px); opacity: 1; }
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(245 181 61 / 0); }
+    50% { box-shadow: 0 0 22px 2px rgb(245 181 61 / .35); }
+  }
+}
+
+html, body, #app { height: 100%; }
+body { @apply bg-bg text-ink font-sans antialiased; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #232833; border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+.label { @apply font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-mute; }
+.chip { @apply font-mono text-[11px] px-1.5 py-0.5 rounded border border-line2 bg-panel2 text-mute; }
+.btn { @apply font-mono text-[11px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded border border-line2 bg-panel2 text-ink hover:border-mute hover:bg-[#161a21] transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed; }
+.panel { @apply bg-panel border border-line rounded-lg; }
+
+/* Markdown do LLM viết (đã sanitize) */
+.md { @apply text-[13px] leading-relaxed text-ink; }
+.md p { @apply my-1.5; }
+.md ul { @apply list-disc pl-5 my-1.5; }
+.md ol { @apply list-decimal pl-5 my-1.5; }
+.md code { @apply font-mono text-[12px] bg-panel2 border border-line px-1 rounded; }
+.md pre { @apply font-mono text-[12px] bg-bg border border-line rounded p-2 my-2 overflow-x-auto; }
+.md pre code { @apply border-0 p-0 bg-transparent; }
+.md table { @apply w-full my-2 text-[12px] border-collapse; }
+.md th, .md td { @apply border border-line2 px-2 py-1 text-left align-top; }
+.md th { @apply bg-panel2 text-mute font-mono uppercase text-[11px]; }
+.md strong { @apply text-white font-semibold; }
+.md h1, .md h2, .md h3 { @apply font-semibold text-white mt-2 mb-1; }
+
+/* Vue Flow tối */
+.vue-flow__controls { @apply bg-panel! border! border-line! rounded-md! overflow-hidden shadow-none!; }
+.vue-flow__controls-button { @apply bg-panel! border-line! fill-mute! hover:bg-panel2!; }
+.vue-flow__edge-path { transition: stroke .3s, stroke-width .3s; }
+.vue-flow__handle { opacity: 0; }
+
+/* Chuyển cảnh danh sách (tin nhắn, toast) */
+.list-enter-active { animation: rise .32s cubic-bezier(.2,.8,.3,1) both; }
+.list-leave-active { transition: opacity .2s, transform .2s; }
+.list-leave-to { opacity: 0; transform: translateX(16px); }

@@ -1,0 +1,778 @@
+{
+  "info": {
+    "_postman_id": "87c6e6e5-3b21-43e0-a600-009f5530c904",
+    "name": "Kyta Platform API Collection",
+    "description": "Bộ sưu tập API cho nền tảng Kyta bao gồm các phân hệ: eAccount (Auth/Token), UAA, eForm, eRequest, eCategory, Notification/Envelope.\n\n### Hướng dẫn sử dụng:\n1. Vào thư mục **1. eAccount (Auth)** -> chọn request **Đăng nhập (Lấy Access Token)**.\n2. Điền username và password vào Collection Variables (hoặc trực tiếp trong body).\n3. Bấm **Send** -> Script Test sẽ **tự động lấy access_token** gán vào biến collection `access_token`.\n4. Toàn bộ các API ở các phân hệ khác (eForm, eRequest, UAA...) đều được cấu hình kế thừa auth (`Bearer {{access_token}}`), tự động sẵn sàng gọi mà không cần copy/paste token thủ công.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "auth_host",
+      "value": "https://eaccount.sandbox.kytaplatform.com",
+      "type": "string",
+      "description": "Host đăng nhập eAccount (ví dụ: https://eaccount.sandbox.kytaplatform.com hoặc https://eaccount.sabeco-app.vn)"
+    },
+    {
+      "key": "base_url",
+      "value": "https://eform.sandbox.kytaplatform.com",
+      "type": "string",
+      "description": "Host API eForm / Gateway (ví dụ: https://eform.sandbox.kytaplatform.com hoặc https://eform.sabeco-app.vn)"
+    },
+    {
+      "key": "username",
+      "value": "",
+      "type": "string",
+      "description": "Tên đăng nhập / email tài khoản Kyta"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "string",
+      "description": "Mật khẩu đăng nhập Kyta"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "Tự động cập nhật sau khi gọi request Đăng nhập"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "Tự động cập nhật sau khi gọi request Đăng nhập"
+    },
+    {
+      "key": "form_id",
+      "value": "",
+      "type": "string",
+      "description": "ID của form Kyta (dạng 0000...)"
+    },
+    {
+      "key": "ticket_id",
+      "value": "",
+      "type": "string",
+      "description": "ID phiếu yêu cầu / ticket eRequest"
+    },
+    {
+      "key": "catalog_id",
+      "value": "",
+      "type": "string",
+      "description": "ID danh mục trong eCategory"
+    },
+    {
+      "key": "category_code",
+      "value": "",
+      "type": "string",
+      "description": "Mã danh mục trong eCategory"
+    },
+    {
+      "key": "file_id",
+      "value": "",
+      "type": "string",
+      "description": "ID file trong storage-files"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. eAccount (Auth & Quản lý phiên)",
+      "description": "Phân hệ xác thực tài khoản và quản lý token người dùng.",
+      "item": [
+        {
+          "name": "Đăng nhập (Tự động lấy & lưu Access Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Tự động bắt access_token và lưu vào biến collection",
+                  "const res = pm.response.json();",
+                  "",
+                  "if (res.access_token) {",
+                  "    pm.collectionVariables.set(\"access_token\", res.access_token);",
+                  "    console.log(\"✓ Đã tự động cập nhật access_token:\", res.access_token);",
+                  "}",
+                  "",
+                  "if (res.refresh_token) {",
+                  "    pm.collectionVariables.set(\"refresh_token\", res.refresh_token);",
+                  "    console.log(\"✓ Đã lưu refresh_token:\", res.refresh_token);",
+                  "}",
+                  "",
+                  "pm.test(\"Đăng nhập thành công (HTTP 200)\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response có chứa access_token\", function () {",
+                  "    pm.expect(res.access_token).to.be.a(\"string\");",
+                  "    pm.expect(res.access_token.length).to.be.above(20);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json, text/plain, */*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\",\n  \"rememberMe\": true,\n  \"signinType\": null,\n  \"otp\": null,\n  \"contactTrace\": \"{\\\"ip\\\":null,\\\"location\\\":null,\\\"deviceName\\\":null,\\\"deviceId\\\":null,\\\"timeTrace\\\":null,\\\"type\\\":null,\\\"latLong\\\":null,\\\"browser\\\":null,\\\"osVersion\\\":null}\"\n}"
+            },
+            "url": {
+              "raw": "{{auth_host}}/auth/login",
+              "host": [
+                "{{auth_host}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Gửi yêu cầu đăng nhập. Postman Test script sẽ tự động trích xuất `access_token` từ response body và lưu vào biến collection `access_token` để tất cả các API khác kế thừa sử dụng ngay lập tức."
+          }
+        },
+        {
+          "name": "Làm mới Token (Refresh Token)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{auth_host}}/auth/refresh-token",
+              "host": [
+                "{{auth_host}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            },
+            "description": "Dùng refresh_token để xin cấp lại access_token mới khi token cũ hết hạn."
+          }
+        },
+        {
+          "name": "Đăng xuất (Logout)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_host}}/auth/logout",
+              "host": [
+                "{{auth_host}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Hủy phiên làm việc hiện tại."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. UAA (Tài khoản & Phân quyền)",
+      "description": "Lấy thông tin profile, vai trò và quyền hạn của tài khoản đang đăng nhập.",
+      "item": [
+        {
+          "name": "Lấy thông tin tài khoản hiện tại (Account Info)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/uaa/api/account",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "uaa",
+                "api",
+                "account"
+              ]
+            },
+            "description": "Lấy thông tin chi tiết của người dùng đăng nhập: email, id, fullName, authorities..."
+          }
+        },
+        {
+          "name": "Lấy thông tin eAccount",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/uaa/api/account-eaccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "uaa",
+                "api",
+                "account-eaccount"
+              ]
+            },
+            "description": "Lấy thông tin mapping tài khoản eAccount."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. eForm (Thiết kế Form & Code động)",
+      "description": "Quản lý form, lấy danh sách, kiểm tra quyền edit, xem/lưu code động và custom UI.",
+      "item": [
+        {
+          "name": "Tìm kiếm danh sách Form sở hữu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"beginTime\": \"\",\n  \"endTime\": \"\",\n  \"beginDate\": \"\",\n  \"endDate\": \"\",\n  \"statusForm\": [\n    \"\"\n  ],\n  \"formId\": null,\n  \"formName\": null,\n  \"listProcedure\": null,\n  \"tag\": null,\n  \"createdByList\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/owner/find-form?page=0&size=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "owner",
+                "find-form"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Tìm kiếm các form mà tài khoản hiện tại sở hữu hoặc có quyền xem."
+          }
+        },
+        {
+          "name": "Lấy chi tiết Form (Full JSON + Custom UI)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/owner/form?formId={{form_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "owner",
+                "form"
+              ],
+              "query": [
+                {
+                  "key": "formId",
+                  "value": "{{form_id}}"
+                }
+              ]
+            },
+            "description": "Lấy cấu hình đầy đủ của một form bao gồm `jsonForm` và các khối `customRenderCode` (custom UI)."
+          }
+        },
+        {
+          "name": "Lấy danh sách Form (Rút gọn)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/owner/form-list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "owner",
+                "form-list"
+              ]
+            },
+            "description": "Lấy danh sách rút gọn các form thuộc quyền sở hữu."
+          }
+        },
+        {
+          "name": "Kiểm tra / Khóa quyền Edit Form",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/common/check-edit?formId={{form_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "common",
+                "check-edit"
+              ],
+              "query": [
+                {
+                  "key": "formId",
+                  "value": "{{form_id}}"
+                }
+              ]
+            },
+            "description": "Kiểm tra xem form có đang bị người khác mở khóa edit ở modeler hay không."
+          }
+        },
+        {
+          "name": "Lấy Script Code động của Form",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/forms/{{form_id}}/code",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "forms",
+                "{{form_id}}",
+                "code"
+              ]
+            },
+            "description": "Lấy danh sách các file mã nguồn JavaScript động `{ [fileKey]: { code, order } }`."
+          }
+        },
+        {
+          "name": "Cập nhật Script Code động (Full Replace)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"main\": {\n    \"code\": \"// Code JavaScript của form\\nconsole.log(\\\"Loaded\\\");\",\n    \"order\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/forms/{{form_id}}/code",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "forms",
+                "{{form_id}}",
+                "code"
+              ]
+            },
+            "description": "Lưu lại code động của form. Chú ý: payload sẽ thay thế toàn bộ danh sách file code động trên server."
+          }
+        },
+        {
+          "name": "Cập nhật cấu hình Form (Save Owner Form)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"beginTime\": \"2024/01/01\",\n  \"describeForm\": \"\",\n  \"endTime\": \"2030/12/31\",\n  \"formCode\": \"FORM_CODE\",\n  \"formId\": \"{{form_id}}\",\n  \"formName\": \"Tên form mẫu\",\n  \"jsonForm\": \"{}\",\n  \"tag\": \"\",\n  \"variableArr\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/owner/form",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "owner",
+                "form"
+              ]
+            },
+            "description": "Lưu định nghĩa form cùng với custom UI (trong jsonForm). Payload yêu cầu đúng chuẩn 9 trường theo format Kyta."
+          }
+        },
+        {
+          "name": "Tải file đính kèm (Download File)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/services/eform/api/storage-files/downloadFile?fileId={{file_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "eform",
+                "api",
+                "storage-files",
+                "downloadFile"
+              ],
+              "query": [
+                {
+                  "key": "fileId",
+                  "value": "{{file_id}}"
+                }
+              ]
+            },
+            "description": "Tải file từ kho lưu trữ của eForm."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. eRequest (Quy trình & Phiếu yêu cầu - Tickets)",
+      "description": "Tìm kiếm ticket, đọc thông tin người duyệt/ký, lấy dữ liệu sub-form...",
+      "item": [
+        {
+          "name": "Tìm kiếm Tickets (Phiếu yêu cầu)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"textSearch\": \"\",\n  \"myTicket\": false,\n  \"ticketStatus\": [\n    \"processing\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/services/erequest/api/tickets/search?page=0&size=20&sort=createdDate,desc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "erequest",
+                "api",
+                "tickets",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "createdDate,desc"
+                }
+              ]
+            },
+            "description": "Tìm kiếm tickets theo từ khóa tìm kiếm, trạng thái (processing, completed...)."
+          }
+        },
+        {
+          "name": "Lấy chi tiết Ticket theo ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/erequest/api/tickets/{{ticket_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "erequest",
+                "api",
+                "tickets",
+                "{{ticket_id}}"
+              ]
+            },
+            "description": "Lấy toàn bộ thông tin chi tiết của 1 phiếu yêu cầu theo ticket ID."
+          }
+        },
+        {
+          "name": "Lấy thông tin người xử lý / người ký (Recipient Details)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/erequest/api/recipient-details/implement/{{ticket_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "erequest",
+                "api",
+                "recipient-details",
+                "implement",
+                "{{ticket_id}}"
+              ]
+            },
+            "description": "Lấy thông tin người xử lý, node ký và ủy quyền hiện tại của ticket."
+          }
+        },
+        {
+          "name": "Lấy dữ liệu Sub-Form của Ticket",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/erequest/api/ticket-sub-form-data/get-sub-form-data?ticketId={{ticket_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "erequest",
+                "api",
+                "ticket-sub-form-data",
+                "get-sub-form-data"
+              ],
+              "query": [
+                {
+                  "key": "ticketId",
+                  "value": "{{ticket_id}}"
+                }
+              ]
+            },
+            "description": "Lấy dữ liệu các form con (sub-form) đính kèm trong phiếu yêu cầu."
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. eCategory (Danh mục dữ liệu dùng chung)",
+      "description": "Truy vấn dữ liệu từ các danh mục dùng chung (catalogs / categories).",
+      "item": [
+        {
+          "name": "Lấy dữ liệu danh mục theo Catalog ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/ecategory/api/data/{{catalog_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "ecategory",
+                "api",
+                "data",
+                "{{catalog_id}}"
+              ]
+            },
+            "description": "Lấy dữ liệu các bản ghi trong danh mục theo ID danh mục."
+          }
+        },
+        {
+          "name": "Lấy dữ liệu danh mục theo Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/services/ecategory/api/data/code/{{category_code}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "ecategory",
+                "api",
+                "data",
+                "code",
+                "{{category_code}}"
+              ]
+            },
+            "description": "Lấy danh sách các mục thuộc danh mục theo mã Code (ví dụ: DM_PHONG_BAN, DM_CHUC_VU...)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Notification & Envelope (Thông báo & Ký số)",
+      "description": "Gửi email thông báo, theo dõi trạng thái ký tài liệu.",
+      "item": [
+        {
+          "name": "Gửi thông báo Email từ eRequest",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticketId\": \"{{ticket_id}}\",\n  \"recipients\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/services/email-notify/api/sendNotifyFromErequest",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "email-notify",
+                "api",
+                "sendNotifyFromErequest"
+              ]
+            },
+            "description": "Kích hoạt gửi email thông báo trạng thái phiếu yêu cầu tới danh sách người nhận."
+          }
+        },
+        {
+          "name": "Thông báo trạng thái Envelope (Ký số)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/services/envelope/api/envelope/notification",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "envelope",
+                "api",
+                "envelope",
+                "notification"
+              ]
+            },
+            "description": "Webhook / endpoint thông báo trạng thái luồng ký số."
+          }
+        }
+      ]
+    }
+  ]
+}

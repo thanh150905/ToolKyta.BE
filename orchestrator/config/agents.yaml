@@ -1,0 +1,60 @@
+# Đội agent của Kyta Swarm. Overseer nhận prompt → lập kế hoạch → gọi đúng agent cần thiết.
+# tools: bộ công cụ agent được dùng.  write: thư mục (tính từ gốc repo kyta) agent được GHI.
+# kyta: read = chỉ lệnh đọc; write = được chạy lệnh ghi (vẫn qua dry-run / duyệt của người).
+swarm:
+  requirePlanApproval: true   # người duyệt kế hoạch trước khi chạy
+  maxReplans: 3               # số lần Overseer được lập lại kế hoạch khi có bước thất bại
+  maxStepsPerTask: 30         # số lượt gọi LLM tối đa cho 1 task
+  maxCostPerRun: 2.0          # USD ước tính — vượt thì dừng run (theo giá trong models.yaml)
+  defaultCustomer: saigoncoop
+  defaultEnv: sandbox
+
+agents:
+  - id: overseer
+    name: Overseer
+    title: Điều phối
+    model: gemini-2.5-flash
+    prompt: overseer.md
+    tools: []
+
+  - id: ba
+    name: BA
+    title: Phân tích nghiệp vụ
+    model: gemini-2.5-flash
+    prompt: ba.md
+    tools: [find_local, list_dir, read_file, search, kyta_run, ask_human]
+    kyta: read
+
+  - id: recon
+    name: Recon
+    title: Cào API nền tảng
+    model: gemini-2.5-flash
+    prompt: recon.md
+    tools: [list_dir, read_file, search, write_file, edit_file, platform_get, browser_open, browser_network, ask_human]
+    write: [docs/]
+
+  - id: dev
+    name: Dev
+    title: Lập trình kyta
+    model: gemini-2.5-flash
+    prompt: dev.md
+    tools: [find_local, list_dir, read_file, search, write_file, edit_file, check_js, run_tests, git_diff, kyta_run]
+    write: [src/, test/, docs/]
+    kyta: read
+
+  - id: config
+    name: Config
+    title: Cấu hình form · flow · mail
+    model: gemini-2.5-flash
+    prompt: config.md
+    tools: [find_local, list_dir, read_file, search, write_file, edit_file, check_js, git_diff, kyta_run, ask_human]
+    write: [workspace/]
+    kyta: write
+
+  - id: qa
+    name: QA
+    title: Kiểm thử
+    model: gemini-2.5-flash
+    prompt: qa.md
+    tools: [find_local, list_dir, read_file, search, check_js, git_diff, run_tests, kyta_run]
+    kyta: read

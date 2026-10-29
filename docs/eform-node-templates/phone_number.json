@@ -1,0 +1,26 @@
+{
+  "id": "000071DzIyk0SxA5OKgeJsQQGQ_phone_number-1",
+  "code": "",
+  "type": "phone_number",
+  "label": "Số điện thoại",
+  "value": "",
+  "hashid": "79q4N38JG",
+  "display": true,
+  "tooltip": "",
+  "readonly": true,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": true,
+    "inputMask": "0999999999",
+    "maxLength": "",
+    "minLength": ""
+  },
+  "inputType": "text",
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}

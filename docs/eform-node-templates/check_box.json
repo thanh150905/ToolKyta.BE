@@ -1,0 +1,39 @@
+{
+  "id": "000071gbIgKTgwy5J1NBcR9ep_check_box-1",
+  "code": "",
+  "type": "check_box",
+  "label": "Ringisho",
+  "value": "",
+  "hashid": "Y7mwWJKmkumj",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": true
+  },
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "left",
+  "textTransform": "none",
+  "checkBoxConfig": {
+    "datas": [
+      {
+        "id": 1,
+        "label": "Yes",
+        "value": "Yes",
+        "checked": false
+      },
+      {
+        "id": 2,
+        "label": "No",
+        "value": "No",
+        "checked": false
+      }
+    ],
+    "otherChoose": false,
+    "numberColumns": "3",
+    "displayColumns": true,
+    "valueOtherChoose": ""
+  },
+  "metaSearchOnRequest": false
+}

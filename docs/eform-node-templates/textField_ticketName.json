@@ -1,0 +1,31 @@
+{
+  "id": "0000710eIm3i2QNgRxJgF44n4_textField_ticketName-1",
+  "code": "",
+  "slug": "",
+  "type": "textField_ticketName",
+  "label": "Ticket Name",
+  "value": "",
+  "hashid": "qkxl7m1g7",
+  "display": true,
+  "formula": {
+    "expression_value": []
+  },
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": false,
+    "maxLength": "",
+    "minLength": "",
+    "messErrorForRegex": "",
+    "listSelectedRegex_value": []
+  },
+  "inputType": "text",
+  "spellCheck": false,
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "metaSearchOnRequest": false
+}

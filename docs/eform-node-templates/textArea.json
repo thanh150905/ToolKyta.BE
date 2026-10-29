@@ -1,0 +1,36 @@
+{
+  "id": "000071VoIPz2IwlReM2WaI99V9_textArea-1",
+  "code": "",
+  "slug": null,
+  "type": "textArea",
+  "label": "Thời điểm phát hành HSMT",
+  "value": "",
+  "hashid": "EqL4Npp5Y",
+  "display": true,
+  "formula": {
+    "expression_value": []
+  },
+  "tooltip": "",
+  "readonly": true,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": true,
+    "maxLength": "",
+    "minLength": "",
+    "messErrorForRegex": "",
+    "listSelectedRegex_value": []
+  },
+  "inputType": "text",
+  "spellCheck": false,
+  "allowRecord": false,
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "extractCLMInfo": false,
+  "textAreaConfig": {
+    "isHTMLTag": false
+  },
+  "metaSearchOnRequest": false
+}

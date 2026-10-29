@@ -1,0 +1,80 @@
+{
+  "id": "0000710eIm3i2QNgRxJgF44n4_textField_ticketName-1",
+  "code": "",
+  "slug": "",
+  "type": "textField_ticketName",
+  "label": "Ticket Name",
+  "value": "",
+  "hashid": "qkxl7m1g7",
+  "display": true,
+  "formula": {
+    "expression_value": [
+      {
+        "type": "func",
+        "value": "concatenate"
+      },
+      {
+        "type": "number",
+        "value": "("
+      },
+      {
+        "type": "variable",
+        "value": "0000710eIm3i2QNgRxJgF44n4_textField-14"
+      },
+      {
+        "type": "number",
+        "value": ","
+      },
+      {
+        "type": "number",
+        "value": "_"
+      },
+      {
+        "type": "number",
+        "value": ","
+      },
+      {
+        "type": "text",
+        "value": "Trên 500tr Đấu thầu"
+      },
+      {
+        "type": "number",
+        "value": ","
+      },
+      {
+        "type": "number",
+        "value": "_"
+      },
+      {
+        "type": "number",
+        "value": ","
+      },
+      {
+        "type": "variable",
+        "value": "0000710eIm3i2QNgRxJgF44n4_textField-21"
+      },
+      {
+        "type": "number",
+        "value": ")"
+      }
+    ]
+  },
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "regex": "",
+    "unique": false,
+    "required": false,
+    "maxLength": "",
+    "minLength": "",
+    "messErrorForRegex": "",
+    "listSelectedRegex_value": []
+  },
+  "inputType": "text",
+  "spellCheck": false,
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "metaSearchOnRequest": false
+}

@@ -1,0 +1,37 @@
+{
+  "id": "000071WBIvVSaQ2yyzqbu6E9y_radio_button-1",
+  "code": "",
+  "type": "radio_button",
+  "label": "Phạm vi hợp đồng",
+  "value": "Trong nước",
+  "hashid": "a6l9nn6ly",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": true
+  },
+  "description": "",
+  "placeholder": "",
+  "radioConfig": {
+    "datas": [
+      {
+        "id": 1,
+        "label": "Trong nước",
+        "value": "Trong nước"
+      },
+      {
+        "id": 2,
+        "label": "Nước ngoài",
+        "value": "Nước ngoài"
+      }
+    ],
+    "otherChoose": false,
+    "numberColumns": "",
+    "displayColumns": false,
+    "valueOtherChoose": ""
+  },
+  "labelPosition": "above",
+  "textTransform": "none",
+  "metaSearchOnRequest": false
+}

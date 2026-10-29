@@ -1,0 +1,24 @@
+{
+  "id": "000061GyIy4ukyL5JNmMHgWQd_record_audio-1",
+  "code": "",
+  "type": "record_audio",
+  "label": "Record Audio",
+  "value": "",
+  "hashid": "A6gJkK6kLI77",
+  "display": false,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": false,
+    "maxSizeFile": "",
+    "minSizeFile": "",
+    "mutilChoose": true
+  },
+  "description": "",
+  "textPosition": "left",
+  "recordAudioConfig": {
+    "speechLanguage": "vi-VN",
+    "isExtractTextWithAI": false,
+    "targetFieldIds_value": []
+  }
+}

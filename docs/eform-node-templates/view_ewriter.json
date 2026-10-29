@@ -1,0 +1,20 @@
+{
+  "id": "000071VoIPz2IwlReM2WaI99V9_view_ewriter-1",
+  "code": "",
+  "type": "view_ewriter",
+  "label": "Xem tài liệu phê duyệt",
+  "value": "000071qOIdorSne1NbO8m",
+  "hashid": "j8ng7drew",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": false
+  },
+  "description": "",
+  "textPosition": "right",
+  "previewDocumentConfig": {
+    "useLabelCustom": true,
+    "pushHiddenField": false
+  }
+}

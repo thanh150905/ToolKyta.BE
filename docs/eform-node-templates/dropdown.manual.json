@@ -1,0 +1,35 @@
+{
+  "id": "0000715yIl8cgQWoMGlOUKK6K_dropdown-1",
+  "code": "",
+  "type": "dropdown",
+  "label": "Dropdown",
+  "value": null,
+  "hashid": "ozbvxogn9",
+  "display": true,
+  "tooltip": "",
+  "readonly": false,
+  "validate": {
+    "required": false,
+    "mutilChoose": true
+  },
+  "description": "",
+  "placeholder": "",
+  "labelPosition": "above",
+  "textTransform": "none",
+  "dropdownConfig": {
+    "data": [
+      {
+        "id": 1,
+        "label": "Item 1",
+        "value": "1"
+      }
+    ],
+    "allowAddTag": true,
+    "typeGetData_value": {
+      "label": "Nhập dữ liệu",
+      "value": 1
+    }
+  },
+  "extractCLMInfo": false,
+  "metaSearchOnRequest": false
+}
