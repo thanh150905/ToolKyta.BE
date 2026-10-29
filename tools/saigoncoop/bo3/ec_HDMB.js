@@ -1,1 +1,0 @@
-module.exports = { S: '0000719yI0dHnR6eQyzWfll5l', U: '000071nPInASbzPel6vzTWW4W', ATT: 'table_advance-2', ATT_HEAD: 'h2-16', ATT_NOTE: 'text-1', EXTRA_CODE: { hanghoa: '// hanghoa.js — tính thành tiền/VAT/tổng bảng hàng hoá (giữ từ form cũ luồng 3).\n' + require('fs').readFileSync(__dirname + '/hdmb_hanghoa.js', 'utf8') } };

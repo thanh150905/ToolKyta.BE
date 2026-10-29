@@ -1,11 +1,12 @@
-# eForm — chuẩn đặc tả form (`spec.yaml`)
+# eForm — chuẩn đặc tả form (spec YAML)
 
-Nguồn **canonical** để generate 1 form eForm. Quy ước cho BMW (và mọi khách): **1 file `spec.yaml` / form**, commit
-ngay trong thư mục form: `workspace/<customer>/<env>/eform/<form>/spec.yaml`.
+Nguồn **canonical** để generate 1 form eForm. Quy ước cho mọi khách: **1 file spec / form**, đặt theo khách (không theo
+env): `workspace/<customer>/specs/forms/<formCode>.yaml`. File gốc BA gửi (xlsx/pdf) để nguyên ở
+`workspace/<customer>/specs/_raw/`. Tra nhanh: `kyta where <formCode>`.
 
 **Vòng đời**: BA điền phiếu [eform-form-spec-template.xlsx](eform-form-spec-template.xlsx) (dễ điền tay) → tôi convert
-sang `spec.yaml` này (diff/review được trong PR) → **bạn tạo form vỏ rỗng trên designer, dán `formId` vào `meta.formId`**
-→ tôi dựng field + bố cục + điều kiện + code động từ `spec.yaml`, push lên vỏ đó.
+sang spec YAML này (diff/review được trong PR) → **bạn tạo form vỏ rỗng trên designer, dán `formId` vào
+`meta.instances.<env>`** → tôi dựng field + bố cục + điều kiện + code động từ spec, push lên vỏ đó.
 
 > Vì sao YAML là source of truth (không phải xlsx): text → git diff từng dòng, review trong PR, tôi parse tất định
 > không phải giải nén binary. xlsx chỉ là **phiếu thu thập** đầu vào.
@@ -24,12 +25,13 @@ meta:
   formCode: "eF4_BOQ_NB_start"             # mã form, duy nhất trong customer
   describe: "Bảng khối lượng BOQ nội bộ, bước khởi tạo bởi CVKH"
   customer: bmw
-  env: sandbox
-  formId: ""            # ĐỂ TRỐNG → điền sau khi tạo vỏ tay trên designer
+  instances:            # formId theo env — ĐỂ TRỐNG → điền sau khi tạo vỏ tay trên designer
+    sandbox: ""
+    # prod: ""          # thêm khi triển khai env khác (cùng 1 spec)
   tag: ""               # chuỗi, phân tách bằng dấu phẩy nếu nhiều tag
 ```
 
-`formId` trống = tôi **chưa** push được (không có vỏ). Điền xong mới generate.
+`instances.<env>` trống = tôi **chưa** push được lên env đó (không có vỏ). Điền xong mới generate.
 
 ---
 
@@ -220,8 +222,8 @@ logic:
 
 ## 8. Quy trình generate (tôi chạy)
 
-1. BA điền xlsx → tôi convert → `spec.yaml` (review trong PR).
-2. Bạn tạo form vỏ trên designer → dán `formId` vào `meta.formId`.
+1. BA điền xlsx (lưu `specs/_raw/`) → tôi convert → `specs/forms/<formCode>.yaml` (review trong PR).
+2. Bạn tạo form vỏ trên designer → dán `formId` vào `meta.instances.<env>`.
 3. Tôi generate: `field add` từng field theo `layout` → `field group/move` dựng bố cục → `condition` cho `conditions`
    → viết `code/*.js` cho `logic` → `push`. Mỗi bước `--dry-run` trước ở form thật.
 4. `pull` lại + `diff` để đối chiếu spec ↔ server.

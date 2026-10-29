@@ -12,9 +12,18 @@ If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is 
 ## Giảm lãng phí (BẮT BUỘC)
 
 1. **KHÔNG tự sinh file .md/.docx bàn giao** (handover, plan, audit, summary, handoff-prompt). Cần lưu lại → ghi 1 dòng vào memory. Chỉ tạo file tài liệu khi người dùng yêu cầu rõ.
-2. **Script tạm/một-lần dùng** (apply_*, step*, rework_*, push_all_*, build_*, generate_*) viết vào scratchpad của phiên, KHÔNG để trong `scratch/` của repo. `scratch/` đã được gitignore — không commit gì vào đó. Script có giá trị tái dùng lâu dài mới đặt vào `tools/` hoặc `bin/` và nói rõ với người dùng.
-3. **KHÔNG lặp lại** nội dung đã có trong `docs/` hay memory — chỉ trỏ tới (ví dụ "xem docs/playbooks.md mục X").
+2. **Script tạm/một-lần dùng** (apply_*, step*, rework_*, push_all_*, build_*, generate_*) viết vào scratchpad của phiên, KHÔNG để trong `scratch/` của repo. `scratch/` đã được gitignore — không commit gì vào đó. Script tái dùng lâu dài: dùng chung → `tools/` hoặc `bin/`; riêng 1 khách → `workspace/<customer>/tools/`; nói rõ với người dùng.
+3. **KHÔNG lặp lại** nội dung đã có trong `docs/`, README khách hay memory — chỉ trỏ tới (ví dụ "xem docs/README.tool.md mục X").
+
+## Tổ chức
+
+- `docs/` = tài liệu nền tảng dùng chung. Mọi thứ riêng 1 khách nằm ở `workspace/<customer>/`: `README.md` (trang chủ),
+  `specs/` (forms/flows/selectors theo mã, `_raw/` = file gốc BA), `docs/`, `tools/`, rồi `<env>/<module>/`.
+- Người dùng nhắc tên/mã form, flow, selector → `kyta where <mã>` (tra cả spec) trước khi hỏi lại hay đòi upload file.
+- 2 git: `.git` = workspace (nhánh `vinhtx7`, có push lên remote team); `.tool.git` = code tool, **chỉ local, không push**
+  (`git --git-dir=.tool.git --work-tree=. ...`). Không commit/push khi chưa được yêu cầu.
 
 ## Dự án khách hàng
 
-- SaigonCoop: đọc `docs/saigoncoop.md` trước khi làm (trạng thái luồng, kiến trúc form con, việc tồn, script `tools/saigoncoop/`).
+- SaigonCoop: đọc `workspace/saigoncoop/README.md` trước khi làm (trạng thái luồng, kiến trúc form con, việc tồn, script `workspace/saigoncoop/tools/`).
+- BMW: đọc `workspace/bmw/README.md`; bàn giao form PR ở `workspace/bmw/docs/pr-handover.md`; API đối tác `workspace/bmw/docs/api/`.

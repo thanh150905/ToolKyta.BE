@@ -19,6 +19,10 @@ Mọi tài nguyên nằm dưới `workspace/<customer>/<env>/<phân hệ>/`, đ�
 ```text
 workspace/
   registry.json                                  # bảng tra formId → customer/env/path (sinh tự động, không sửa tay)
+  <customer>/README.md                           # trang chủ khách: nghiệp vụ, luồng, trạng thái, việc tồn
+  <customer>/specs/                              # đặc tả không theo env: forms/<formCode>.yaml, flows/, selectors/; _raw/ = file gốc BA
+  <customer>/docs/                               # tài liệu riêng khách (API đối tác, bàn giao...)
+  <customer>/tools/                              # script riêng khách
   <customer>/<env>/
     eform/<nhóm>/<tên form>/                     # .meta.json, code/*.js, ui/<field>/, fields.json
     eflow/<tên quy trình>/                       # .meta.json, flow.json

@@ -152,10 +152,15 @@ config/
   credentials.example.json     # mẫu credentials
   credentials.local.json       # credentials trên máy, không commit
 workspace/
-  <customer>/<env>/<module>/   # tài nguyên đã pull hoặc chuẩn bị push
+  <customer>/
+    README.md                  # trang chủ khách: nghiệp vụ, luồng, trạng thái, việc tồn — đọc trước khi làm
+    specs/                     # đặc tả KHÔNG theo env: forms/<formCode>.yaml, flows/, selectors/; _raw/ = file gốc BA
+    docs/                      # tài liệu riêng khách (API đối tác, bàn giao...)
+    tools/                     # script riêng khách (chạy từ gốc repo)
+    <env>/<module>/            # tài nguyên đã pull hoặc chuẩn bị push; env = khoá "envs" trong config/kyta.json
   registry.json                # registry form được sinh tự động
 .kyta/                         # cache phiên, snapshot eForm và audit local
-docs/                          # ghi chú API và schema đã khảo sát
+docs/                          # tài liệu nền tảng dùng chung: API, schema, node template, playbook kỹ thuật
 test/                          # test logic chạy offline
 .githooks/pre-commit           # guard eForm khi pre-commit được bật
 ```

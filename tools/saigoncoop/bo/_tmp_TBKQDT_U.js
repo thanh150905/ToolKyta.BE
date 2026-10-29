@@ -1,1 +1,0 @@
-const s=require("./NS_TBKQDT.js");module.exports={IDS:{S:s.IDS.S,U:s.IDS.U,_onlyU:true},MV:{U:s.MV.U},LAYOUT:s.LAYOUT,LABELS:s.LABELS};
