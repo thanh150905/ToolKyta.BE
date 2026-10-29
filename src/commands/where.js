@@ -7,11 +7,13 @@ const fs = require('fs');
 const graph = require('../graph');
 const paths = require('../core/paths');
 const tree = require('../eform/tree');
+const specs = require('../core/specs');
 const { parseArgs, usage } = require('../core/args');
 
 const USAGE = [
-  'kyta where <thư mục | formId | formId_key | hashid | id catalog | id luồng | tên> [--customer c --env e] [--json]',
+  'kyta where <thư mục | formId | formId_key | hashid | id catalog | id luồng | tên | mã spec> [--customer c --env e] [--json]',
   '',
+  '  spec    → workspace/<customer>/specs/{forms,flows,selectors}/ khớp theo mã (tên file) hoặc id trong nội dung',
   '  form    → thư mục, form con nhúng / form cha nhúng nó, form khác dùng token của nó, luồng, eWriter, catalog',
   '  field   → nơi định nghĩa, bản nhúng ở form cha (cờ hashid riêng), code/ui/luồng/eWriter tham chiếu',
   '  catalog → form có dropdown dùng nó + chỗ khác nhắc id',
@@ -224,6 +226,8 @@ function print(/** @type {any} */ r) {
     console.log(`LUỒNG ${r.id}  ${r.name}  [${r.scope}]  ${ws(r.folder)}`);
     console.log(`  form start: ${r.startForm || '—'}`);
     list('form xuất hiện trong luồng', r.forms.map((/** @type {any} */ f) => `${f.id}  ${f.folder ? ws(f.folder) : '(chưa pull)'}`));
+  } else if (r.type === 'spec') {
+    console.log(`SPEC ${r.code}  [${r.customer}/${r.kind}]  ${ws(r.rel)}`);
   } else if (r.type === 'name') {
     console.log(`TÌM "${r.query}"  [${r.scope}]`);
     list('form', r.forms.map((/** @type {any} */ f) => `${f.id || '—'}  ${ws(f.folder)}`));
@@ -242,6 +246,10 @@ function run(/** @type {string[]} */ argv) {
   for (const s of scopesFor(opts, abs)) {
     const r = resolve(graph.load(s.customer, s.env), q, abs);
     if (r) results.push(r);
+  }
+  if (!abs) {
+    const customer = opts['--customer'] || paths.parseWorkspacePath(process.cwd())?.customer;
+    for (const s of specs.find(q, customer)) results.push({ type: 'spec', ...s });
   }
   if (flags.has('--json')) return console.log(JSON.stringify(results, null, 2));
   if (!results.length) return console.log(`Không tìm thấy "${q}" trong workspace.`);

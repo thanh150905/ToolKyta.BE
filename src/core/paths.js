@@ -12,6 +12,18 @@ const REGISTRY_FILE = path.join(WORKSPACE, 'registry.json');
 
 /** @typedef {'eform'|'eflow'|'email'|'ewriter'|'ecatalog'} Module */
 
+/** workspace/<customer> — ngoài các thư mục env còn README.md, specs/, docs/, tools/ của khách. */
+const customerDir = (/** @type {string} */ customer) => path.join(WORKSPACE, safeName(customer));
+
+/** workspace/<customer>/specs — spec form/flow/selector, không phụ thuộc env. */
+const specsDir = (/** @type {string} */ customer) => path.join(customerDir(customer), 'specs');
+
+/** Thư mục env của 1 khách = thư mục con trùng khoá "envs" trong config/kyta.json (bỏ qua specs/, docs/, tools/...). */
+function envDirs(/** @type {string} */ customer) {
+  const known = new Set(require('./config').envs());   // require muộn: config.js require paths.js
+  return subdirs(customerDir(customer)).filter(e => known.has(e));
+}
+
 /** workspace/<customer>/<env>/<module> */
 const moduleDir = (/** @type {string} */ customer, /** @type {string} */ env, /** @type {Module} */ module) =>
   path.join(WORKSPACE, safeName(customer), safeName(env), module);
@@ -25,7 +37,7 @@ const moduleDir = (/** @type {string} */ customer, /** @type {string} */ env, /*
 function moduleRoots(module, customer, env) {
   const out = [];
   for (const c of customer ? [safeName(customer)] : subdirs(WORKSPACE)) {
-    for (const e of env ? [safeName(env)] : subdirs(path.join(WORKSPACE, c))) {
+    for (const e of env ? [safeName(env)] : envDirs(c)) {
       const d = path.join(WORKSPACE, c, e, module);
       if (isDir(d)) out.push(d);
     }
@@ -47,4 +59,7 @@ function parseWorkspacePath(p) {
 /** Đường dẫn tương đối từ gốc repo, dùng dấu "/". */
 const toRepoRel = (/** @type {string} */ abs) => path.relative(REPO, abs).split(path.sep).join('/');
 
-module.exports = { REPO, WORKSPACE, CONFIG, STATE, REGISTRY_FILE, moduleDir, moduleRoots, parseWorkspacePath, toRepoRel };
+module.exports = {
+  REPO, WORKSPACE, CONFIG, STATE, REGISTRY_FILE,
+  customerDir, specsDir, envDirs, moduleDir, moduleRoots, parseWorkspacePath, toRepoRel,
+};

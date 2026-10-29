@@ -178,7 +178,7 @@ const invalidate = () => cache.clear();
 /** Mọi cặp customer/env có trong workspace. */
 function scopes() {
   /** @type {{ customer: string, env: string }[]} */ const out = [];
-  for (const c of subdirs(paths.WORKSPACE)) for (const e of subdirs(path.join(paths.WORKSPACE, c))) out.push({ customer: c, env: e });
+  for (const c of subdirs(paths.WORKSPACE)) for (const e of paths.envDirs(c)) out.push({ customer: c, env: e });
   return out;
 }
 
