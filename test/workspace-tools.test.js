@@ -7,7 +7,17 @@ const graph = require('../src/graph');
 const blocks = require('../src/eform/blocks');
 const { planRefresh } = require('../src/eform/commands/childform');
 const { blockState } = require('../src/eform/commands/lib');
+const { commentTester } = require('../src/eform/commands/lint');
 const { createRuntime, norm } = require('../src/eform/runtime');
+
+test('lint.commentTester: bỏ qua dòng // và khối /* */, không bỏ // giữa dòng', () => {
+  const t = 'const a = "{{0000A_k-1}}";\n  // const b = "{{0000A_k-2}}";\n/* x\n"{{0000A_k-3}}" */\nfetch("https://x/{{0000A_k-4}}");';
+  const at = (/** @type {string} */ tok) => commentTester(t)(t.indexOf(tok));
+  assert.equal(at('{{0000A_k-1}}'), false);
+  assert.equal(at('{{0000A_k-2}}'), true);
+  assert.equal(at('{{0000A_k-3}}'), true);
+  assert.equal(at('{{0000A_k-4}}'), false);
+});
 
 test('graph.tokenRx: biên hai phía; prefix cho phép "<formId>_key"', () => {
   assert.equal('{{0000A_textField-1}} {{0000A_textField-10}}'.match(graph.tokenRx('0000A_textField-1'))?.length, 1);

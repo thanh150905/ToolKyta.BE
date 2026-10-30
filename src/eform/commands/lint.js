@@ -22,6 +22,19 @@ const LAYOUT_KEY_RX = /^(page|columns|row)-\d+$/;
 /** @typedef {{ level: 'error'|'warn', file: string, msg: string }} Issue */
 
 /**
+ * Vùng comment (không chạy) để bỏ qua token trong code đã comment: dòng mở đầu bằng `//` và khối `/* … *\/`.
+ * Cố ý không bắt `//` giữa dòng (dễ nhầm với URL/chuỗi) — token sau code thật vẫn được kiểm.
+ * @param {string} text
+ * @returns {(pos: number) => boolean}
+ */
+function commentTester(text) {
+  /** @type {[number, number][]} */ const ranges = [];
+  for (const m of text.matchAll(/\/\*[\s\S]*?(?:\*\/|$)/g)) ranges.push([m.index, m.index + m[0].length]);
+  for (const m of text.matchAll(/^[ \t]*\/\/.*$/gm)) ranges.push([m.index, m.index + m[0].length]);
+  return pos => ranges.some(([a, b]) => pos >= a && pos < b);
+}
+
+/**
  * Key hợp lệ của 1 form theo fields.json: { byId: id đầy đủ, byKey: key ngắn }.
  * @param {graph.FormNode|null} f
  */
@@ -51,9 +64,10 @@ function lintForm(g, form) {
     const text = fs.readFileSync(file, 'utf8');
     const rel = paths.toRepoRel(file);
     /** @type {Set<string>} */ const seen = new Set();
+    const inComment = commentTester(text);
     for (const m of text.matchAll(TOKEN_RX)) {
       const [tok, fid, key] = m;
-      if (seen.has(tok) || LAYOUT_KEY_RX.test(key)) continue;
+      if (seen.has(tok) || LAYOUT_KEY_RX.test(key) || inComment(m.index ?? 0)) continue;
       seen.add(tok);
       const id = `${fid}_${key}`;
       // Form copy/clone giữ id node của form gốc nên token có thể mang prefix form khác; chỉ coi là lỗi khi key
@@ -133,4 +147,4 @@ function run(/** @type {string[]} */ argv) {
   if (r.errors) process.exitCode = 1;
 }
 
-module.exports = { run, usage: USAGE, lintForm, lintDirs };
+module.exports = { run, usage: USAGE, lintForm, lintDirs, commentTester };
