@@ -26,4 +26,4 @@ If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is 
 ## Dự án khách hàng
 
 - SaigonCoop: đọc `workspace/saigoncoop/README.md` trước khi làm (trạng thái luồng, kiến trúc form con, việc tồn, script `workspace/saigoncoop/tools/`).
-- BMW: đọc `workspace/bmw/README.md`; bàn giao form PR ở `workspace/bmw/docs/pr-handover.md`; API đối tác `workspace/bmw/docs/api/`.
+- BMW: đọc `workspace/bmw/README.md`; cấu trúc thư mục ở mục 0 README; tài liệu tích hợp `workspace/bmw/docs/integrations/`.

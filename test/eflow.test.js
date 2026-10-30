@@ -9,6 +9,7 @@ const cond = require('../src/eflow/condition');
 const inh = require('../src/eflow/inherit');
 const modeler = require('../src/eflow/modeler');
 const paths = require('../src/core/paths');
+const { metaDirs } = require('../src/core/fsx');
 const { scopeIndex } = require('../src/eflow/lookup');
 const { defaultScope, fieldResolver, findEdge } = require('../src/eflow/commands/cond');
 
@@ -16,8 +17,8 @@ const { defaultScope, fieldResolver, findEdge } = require('../src/eflow/commands
 function realFlows() {
   const out = [];
   for (const root of paths.moduleRoots('eflow')) {
-    for (const d of fs.readdirSync(root)) {
-      const fp = path.join(root, d, 'flow.json');
+    for (const d of metaDirs(root)) {
+      const fp = path.join(d, 'flow.json');
       if (fs.existsSync(fp)) out.push(fp);
     }
   }
@@ -140,4 +141,15 @@ test('inherit.retarget: đổi đích sang form khác theo hashid/nhãn, bỏ d�
 test('modeler.parseJsonXml: giải chuỗi mã hoá 2 lần', () => {
   assert.equal(modeler.parseJsonXml(JSON.stringify(JSON.stringify({ modelId: 'X' }))).modelId, 'X');
   assert.equal(modeler.parseJsonXml('{"modelId":"Y"}').modelId, 'Y');
+});
+
+test('resolveJsonXml: jsonXml là URL S3 → tải nội dung, giữ URL ở jsonXmlUrl; inline → giữ nguyên', async (t) => {
+  const url = 'https://bucket.example/data_json_xml_1.json';
+  t.mock.method(globalThis, 'fetch', async (/** @type {string} */ u) => ({ ok: u === url, status: u === url ? 200 : 403, text: async () => '{"modelId":"m1"}' }));
+  const r = await modeler.resolveJsonXml({ id: 'x', jsonXml: url });
+  assert.equal(r.jsonXml, '{"modelId":"m1"}');
+  assert.equal(r.jsonXmlUrl, url);
+  const inline = { id: 'y', jsonXml: '{"modelId":"m2"}' };
+  assert.equal(await modeler.resolveJsonXml(inline), inline);
+  await assert.rejects(modeler.resolveJsonXml({ jsonXml: 'https://bucket.example/khac.json' }), /HTTP 403/);
 });

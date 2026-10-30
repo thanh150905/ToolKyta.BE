@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const paths = require('../core/paths');
-const { readJson, writeJson, hash, safeName, subdirs } = require('../core/fsx');
+const { readJson, writeJson, hash, safeName, subdirs, metaDirs } = require('../core/fsx');
 const { fieldSummary } = require('./fields');
 
 const META = '.meta.json';
@@ -25,9 +25,11 @@ function syncHash(/** @type {any} */ cat) {
   return hash(JSON.stringify(m));
 }
 
-/** Thư mục cho 1 category: theo tên; trùng tên khác id → hậu tố __<id>. */
+/** Thư mục cho 1 category: đã có (kể cả trong thư mục nhóm) thì giữ; chưa có → theo tên, trùng tên khác id → hậu tố __<id>. */
 function dirFor(/** @type {string} */ customer, /** @type {string} */ env, /** @type {any} */ cat) {
   const root = paths.moduleDir(customer, env, 'ecatalog');
+  const known = metaDirs(root, META).find(d => readJson(path.join(d, META), null)?.id === cat.id);
+  if (known) return known;
   const base = safeName(cat.name || cat.id) || String(cat.id);
   const dir = path.join(root, base);
   const meta = readJson(path.join(dir, META), null);

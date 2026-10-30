@@ -57,6 +57,21 @@ function graph(sum, model) {
   };
 }
 
+const isUrl = (/** @type {unknown} */ v) => typeof v === 'string' && /^https?:\/\//.test(v);
+
+/**
+ * Modeler có jsonXml là URL (nền tảng lưu file trên S3) → tải nội dung về thay vào jsonXml, giữ URL ở jsonXmlUrl.
+ * jsonXml inline → trả nguyên.
+ * @param {any} m
+ */
+async function resolveJsonXml(m) {
+  if (!m || !isUrl(m.jsonXml)) return m;
+  const url = m.jsonXml;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Không tải được jsonXml trên S3 (HTTP ${res.status}): ${url}`);
+  return { ...m, jsonXml: await res.text(), jsonXmlUrl: url };
+}
+
 /** jsonXml (chuỗi) → object; chuỗi bị mã hoá 2 lần thì giải thêm 1 lần. */
 function parseJsonXml(/** @type {string|null|undefined} */ text) {
   let v = JSON.parse(text || '{}');
@@ -70,7 +85,7 @@ function parseJsonXml(/** @type {string|null|undefined} */ text) {
  */
 async function load(/** @type {import('./api').Session} */ sess, /** @type {string} */ ref) {
   const sum = await findModeler(sess, ref);
-  const m = await api.getOne(sess, sum.id);
+  const m = await resolveJsonXml(await api.getOne(sess, sum.id));
   let model = {};
   try { model = parseJsonXml(m.jsonXml); } catch (_) {}
   return graph({ ...sum, name: m.name || sum.name, custId: m.custId, orgIn: m.orgIn }, model);
@@ -116,4 +131,4 @@ function findAfter(/** @type {Loaded} */ loaded, /** @type {string} */ afterRef,
   throw new Error(`Không thấy node ${stencil} nào sau "${from.name || from.rid}" (trong 5 bước).`);
 }
 
-module.exports = { SPEC, META_FIELDS, NON_TASK, findModeler, graph, parseJsonXml, load, edges, findNode, findAfter };
+module.exports = { SPEC, META_FIELDS, NON_TASK, findModeler, graph, isUrl, resolveJsonXml, parseJsonXml, load, edges, findNode, findAfter };

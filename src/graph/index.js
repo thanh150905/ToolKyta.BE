@@ -11,7 +11,7 @@ const paths = require('../core/paths');
 const tree = require('../eform/tree');
 const fields = require('../eform/fields');
 const { extractIds } = require('../eform/formId');
-const { readJson, subdirs } = require('../core/fsx');
+const { readJson, subdirs, metaDirs, metaDirOf } = require('../core/fsx');
 
 /**
  * @typedef {{ dir: string, rel: string, ids: string[], name: string,
@@ -41,13 +41,12 @@ function listTextFiles(/** @type {string} */ root) {
   return out;
 }
 
-/** Thư mục cấp 1 có .meta.json của 1 phân hệ (eflow/ewriter/ecatalog/email). */
+/** Thư mục có .meta.json của 1 phân hệ (eflow/ewriter/ecatalog/email), kể cả nằm trong thư mục nhóm. */
 function simpleNodes(/** @type {string} */ customer, /** @type {string} */ env, /** @type {import('../core/paths').Module} */ mod) {
   const root = paths.moduleDir(customer, env, mod);
-  return subdirs(root).map(name => {
-    const dir = path.join(root, name);
+  return metaDirs(root).map(dir => {
     const meta = readJson(path.join(dir, '.meta.json'), {}) || {};
-    return { dir, rel: paths.toRepoRel(dir), id: meta.id || meta.modelId || null, name: meta.name || name, startFormId: meta.formId || null };
+    return { dir, rel: paths.toRepoRel(dir), id: meta.id || meta.modelId || null, name: meta.name || path.basename(dir), startFormId: meta.formId || null };
   });
 }
 
@@ -134,8 +133,8 @@ class Graph {
       while (d.length > paths.WORKSPACE.length && !tree.isForm(d)) d = path.dirname(d);
       return { kind, owner: paths.toRepoRel(d) };
     }
-    const rest = loc?.rest || [];
-    return { kind, owner: paths.toRepoRel(path.join(paths.moduleDir(this.customer, this.env, /** @type {any} */ (kind)), rest[0] || '')) };
+    const root = paths.moduleDir(this.customer, this.env, /** @type {any} */ (kind));
+    return { kind, owner: paths.toRepoRel(metaDirOf(path.dirname(fp), root) || path.join(root, loc?.rest?.[0] || '')) };
   }
 }
 

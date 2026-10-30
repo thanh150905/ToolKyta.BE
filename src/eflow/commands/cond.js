@@ -10,7 +10,7 @@ const cond = require('../condition');
 const store = require('../../core/store');
 const sync = require('../../core/sync');
 const paths = require('../../core/paths');
-const { readJson, subdirs } = require('../../core/fsx');
+const { readJson, metaDirs } = require('../../core/fsx');
 const { scopeIndex, varLabel } = require('../lookup');
 const { parseArgs, usage } = require('../../core/args');
 const { pickOne, grep } = require('../../core/pick');
@@ -31,8 +31,7 @@ const GATEWAYS = new Set(['ExclusiveGateway', 'ParallelGateway', 'InclusiveGatew
 function localDir(/** @type {string} */ customer, /** @type {string} */ env, /** @type {string} */ id) {
   const hits = [];
   for (const root of paths.moduleRoots('eflow', customer, env)) {
-    for (const name of subdirs(root)) {
-      const dir = path.join(root, name);
+    for (const dir of metaDirs(root, sync.META)) {
       if (readJson(path.join(dir, sync.META), null)?.id === id) hits.push(dir);
     }
   }
@@ -69,9 +68,8 @@ async function open(pos, local) {
     dir = localDir(customer, env, sum.id);
     raw = fs.readFileSync(path.join(dir, modeler.SPEC.file), 'utf8');
   } else {
-    const full = await api.getOne(sess, sum.id);
+    const full = await modeler.resolveJsonXml(await api.getOne(sess, sum.id));
     raw = String(full.jsonXml || '');
-    if (/^https?:\/\//.test(raw)) raw = await (await fetch(raw)).text();   // jsonXml lưu trên S3 (xem memory eflow-jsonxml-double-encode)
   }
   model = modeler.parseJsonXml(raw);
   return { sess, model, m: modeler.graph(sum, model), dir, raw, rest, customer, env, ...await index(sess, sum.id, model, sum) };
@@ -240,7 +238,7 @@ async function run(/** @type {string[]} */ argv) {
   store.audit({ op: 'eflow-cond-set', modelerId: m.id, edge: edge.rid, customer: ctx.customer, env: ctx.env, clear: flags.has('--clear') });
   console.log(`  ✓ đã ghi ${paths.toRepoRel(fp)}`);
   console.log(`\nChưa đẩy lên server. Xem lại rồi: kyta eflow push "${paths.toRepoRel(ctx.dir)}" --dry-run`);
-  console.log('⚠ Lưu ý: jsonXml một số luồng BMW đang bị nền tảng lưu S3/mã hoá 2 lần — kiểm tra luồng mở được trong editor sau khi push.');
+  console.log('⚠ Lưu ý: luồng lưu jsonXml trên S3 sẽ bị push chặn; sau khi push kiểm tra luồng mở được trong editor.');
 }
 
 module.exports = { run, usage: USAGE, findEdge, defaultScope, fieldResolver };

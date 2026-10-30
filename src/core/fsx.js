@@ -54,4 +54,27 @@ function subdirs(/** @type {string} */ dir) {
   catch (_) { return []; }
 }
 
-module.exports = { readJson, writeJson, writeText, readText, hash, safeName, isDir, subdirs };
+/**
+ * Thư mục tài nguyên (có .meta.json) dưới root, đệ quy qua thư mục nhóm; gặp .meta.json thì không đi sâu thêm.
+ * @param {string} root
+ * @param {string} [meta]
+ */
+function metaDirs(root, meta = '.meta.json') {
+  /** @type {string[]} */ const out = [];
+  const walk = (/** @type {string} */ d) => {
+    if (fs.existsSync(path.join(d, meta))) out.push(d);
+    else subdirs(d).forEach(n => walk(path.join(d, n)));
+  };
+  subdirs(root).forEach(n => walk(path.join(root, n)));
+  return out;
+}
+
+/** Thư mục tài nguyên (có .meta.json) chứa file/thư mục p, đi ngược lên tới root; không thấy → null. */
+function metaDirOf(/** @type {string} */ p, /** @type {string} */ root, meta = '.meta.json') {
+  for (let d = path.resolve(p); d.length > root.length && d.startsWith(root); d = path.dirname(d)) {
+    if (fs.existsSync(path.join(d, meta))) return d;
+  }
+  return null;
+}
+
+module.exports = { readJson, writeJson, writeText, readText, hash, safeName, isDir, subdirs, metaDirs, metaDirOf };

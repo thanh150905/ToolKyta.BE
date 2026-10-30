@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const paths = require('../core/paths');
 const docx = require('./docx');
-const { readJson, writeJson, writeText, hash, safeName, subdirs } = require('../core/fsx');
+const { readJson, writeJson, writeText, hash, safeName, subdirs, metaDirs } = require('../core/fsx');
 
 const META = '.meta.json';
 const VARS = 'variables.json';
@@ -30,9 +30,11 @@ function syncHash(/** @type {any} */ doc, /** @type {any[]} */ variables) {
   return hash(JSON.stringify({ m, v }));
 }
 
-/** Thư mục cho 1 tài liệu: theo tên; trùng tên khác id → hậu tố __<id>. */
+/** Thư mục cho 1 tài liệu: đã có (kể cả trong thư mục nhóm) thì giữ; chưa có → theo tên, trùng tên khác id → hậu tố __<id>. */
 function dirFor(/** @type {string} */ customer, /** @type {string} */ env, /** @type {any} */ doc) {
   const root = paths.moduleDir(customer, env, 'ewriter');
+  const known = metaDirs(root, META).find(d => readJson(path.join(d, META), null)?.id === doc.id);
+  if (known) return known;
   const base = safeName(doc.name || doc.id) || String(doc.id);
   const dir = path.join(root, base);
   const meta = readJson(path.join(dir, META), null);

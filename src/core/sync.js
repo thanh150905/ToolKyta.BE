@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
 const store = require('./store');
-const { readJson, writeJson, writeText, readText, hash, safeName, subdirs } = require('./fsx');
+const { readJson, writeJson, writeText, readText, hash, safeName, subdirs, metaDirs } = require('./fsx');
 
 const META = '.meta.json';
 const SERVER_ONLY = ['createdDate', 'createdBy', 'lastModifiedBy', 'lastModifiedDate'];
@@ -19,9 +19,11 @@ const SERVER_ONLY = ['createdDate', 'createdBy', 'lastModifiedBy', 'lastModified
  * @property {string} noun    tên gọi khi in log
  */
 
-/** Thư mục cho 1 tài nguyên: theo tên; trùng tên nhưng khác id thì thêm hậu tố __<id>. */
+/** Thư mục cho 1 tài nguyên: đã có (kể cả trong thư mục nhóm) thì giữ; chưa có → theo tên, trùng tên khác id thêm hậu tố __<id>. */
 function dirFor(/** @type {Spec} */ spec, /** @type {string} */ customer, /** @type {string} */ env, /** @type {any} */ obj) {
   const root = paths.moduleDir(customer, env, spec.module);
+  const known = metaDirs(root, META).find(d => readJson(path.join(d, META), null)?.id === obj.id);
+  if (known) return known;
   const base = safeName(obj.name || obj.id) || String(obj.id);
   const dir = path.join(root, base);
   const meta = readJson(path.join(dir, META), null);

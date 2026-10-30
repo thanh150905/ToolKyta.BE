@@ -8,6 +8,7 @@ const graph = require('../graph');
 const paths = require('../core/paths');
 const tree = require('../eform/tree');
 const specs = require('../core/specs');
+const { metaDirOf } = require('../core/fsx');
 const { parseArgs, usage } = require('../core/args');
 
 const USAGE = [
@@ -47,7 +48,7 @@ function resolve(g, q, absPath) {
       const id = tree.metaIds(absPath)[0];
       return id ? formReport(g, id) : null;
     }
-    const top = loc?.rest?.[0] ? path.join(paths.moduleDir(g.customer, g.env, /** @type {any} */ (loc.module)), loc.rest[0]) : null;
+    const top = loc?.rest?.[0] ? metaDirOf(absPath, paths.moduleDir(g.customer, g.env, /** @type {any} */ (loc.module))) : null;
     if (loc?.module === 'eflow') { const f = g.flows.find(x => x.dir === top); return f ? flowReport(g, f) : null; }
     if (loc?.module === 'ecatalog') { const c = g.catalogs.find(x => x.dir === top); return c?.id ? catalogReport(g, c.id) : null; }
     return null;

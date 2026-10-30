@@ -218,6 +218,9 @@ workspace/<customer>/<env>/email/<tên-mẫu>/
   content.html
 ```
 
+eFlow, email, eWriter và eCatalog được phép gom vào thư mục nhóm (`eflow/<nhóm>/<tên>/`...): pull tìm thư mục cũ theo `id`
+nên ghi đè đúng chỗ; tài nguyên chưa có local thì tạo ở gốc module rồi tự chuyển vào nhóm.
+
 `.meta.json` giữ ID, customer/env và thông tin mapping của tài nguyên. Với eFlow/email, metadata còn giữ hash nội dung lần pull gần nhất để phát hiện local đã sửa. Với eForm, metadata ánh xạ tên file local sang key/order mà API yêu cầu và mô tả custom UI; cấu hình field nằm ở `fields.json`; snapshot hash code/UI/fields của eForm được lưu riêng trong `.kyta/snapshots.json`. `workspace/registry.json` được tạo từ cây form để tra `formId` về customer, env và đường dẫn; không nên chỉnh tay, hãy chạy `kyta eform registry` để tạo lại.
 
 `.kyta/` là trạng thái riêng của máy, không đưa vào Git. Trong đó có cache token/cookie, snapshot hash eForm phục vụ status/diff guard và audit log `audit.jsonl`.

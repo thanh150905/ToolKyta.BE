@@ -4,7 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const { parseArgs, splitList, usage, UsageError } = require('../src/core/args');
-const { safeName, hash } = require('../src/core/fsx');
+const { safeName, hash, metaDirs, metaDirOf } = require('../src/core/fsx');
 const { pickOne, grep } = require('../src/core/pick');
 const { toList, unwrap, idOf } = require('../src/core/http');
 const config = require('../src/core/config');
@@ -72,4 +72,15 @@ test('sync.patch + guardDrift: chỉ vá field đổi; chặn push đè thay đ�
   assert.throws(() => sync.guardDrift(spec, { content: 'v9' }, 'v1', meta, false), /pull/);      // chỉ server đổi
   assert.throws(() => sync.guardDrift(spec, { content: 'v9' }, 'v2', meta, false), /XUNG ĐỘT/);  // cả hai đổi
   assert.doesNotThrow(() => sync.guardDrift(spec, { content: 'v9' }, 'v2', meta, true));         // --force
+});
+
+test('metaDirs / metaDirOf: tìm tài nguyên trong thư mục nhóm, không đi sâu vào trong tài nguyên', () => {
+  const fs = require('fs'), os = require('os'), path = require('path');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'kyta-meta-'));
+  const mk = (/** @type {string} */ rel) => { fs.mkdirSync(path.join(root, rel), { recursive: true }); fs.writeFileSync(path.join(root, rel, '.meta.json'), '{}'); };
+  mk('flat'); mk('02-mua-sam/PO'); mk('02-mua-sam/PO/sub'); fs.mkdirSync(path.join(root, 'empty-group'));
+  assert.deepEqual(metaDirs(root).map(d => path.relative(root, d)).sort(), ['02-mua-sam/PO', 'flat']);
+  assert.equal(metaDirOf(path.join(root, '02-mua-sam/PO/flow.json'), root), path.join(root, '02-mua-sam/PO'));
+  assert.equal(metaDirOf(path.join(root, 'empty-group/x.json'), root), null);
+  fs.rmSync(root, { recursive: true, force: true });
 });
