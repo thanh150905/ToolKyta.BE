@@ -121,9 +121,13 @@ async function pushUi(/** @type {import('../api').Session} */ sess, /** @type {s
   const { def, wasString } = formDef.parseFormDef(form);
   if (!def) throw new Error('(ui): form trên server không có jsonForm — không vá được custom UI.');
   const find = formDef.fieldLocator(formDef.collectCustomFields(def), meta);
+  // meta cũ (pull trước khi tách thư mục trùng key) khai 1 thư mục cho 2 field → không biết nội dung là của field nào
+  /** @type {Record<string, number>} */ const dirCount = {};
+  for (const u of meta?.customUI || []) dirCount[u.dir] = (dirCount[u.dir] || 0) + 1;
 
   let changed = 0, missing = 0;
   for (const folder of folders) {
+    if (dirCount[folder] > 1) { console.log(`  ⚠ (ui) ${folder}: ${dirCount[folder]} field cùng thư mục (meta cũ) — bỏ qua, pull lại form để tách thư mục.`); missing++; continue; }
     const field = find(folder);
     if (!field) { console.log(`  ⚠ (ui) ${folder}: field không còn trên server — bỏ qua.`); missing++; continue; }
     const cur = field.node.customRenderCode || {};

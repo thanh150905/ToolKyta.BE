@@ -236,6 +236,11 @@ Code động và custom UI được lưu bằng hai API khác nhau:
 - Định nghĩa form chứa custom UI: `GET/PUT /owner/form`.
 
 Khi pull, CLI tải code động và cố lấy thêm định nghĩa form. Nếu form đang bị khoá khiến không tải được định nghĩa, code động vẫn được pull; UI local đã có sẽ được giữ lại. Code được ghi thành các file `.js`; custom UI thành `index.html`, `style.css`, `script.js` trong `ui/<field>/`.
+Field form vỏ và field nhúng trùng key (vd `table_advance-2`) → thư mục thứ hai là `ui/<key>__<hashid>/`; hai bản nhúng cùng hashid thêm `~2`, `~3`…
+Meta cũ (pull trước 30/10/2026) còn khai 1 thư mục cho 2 field → `push` bỏ qua thư mục đó, phải pull lại để tách.
+Runtime: eForm gắn custom UI vào **Shadow DOM** (`attachShadow({mode:"open"})`, gốc `div.custom-code-table-root`) —
+`style.css` nằm trong shadowRoot; `<style>` chèn vào `document.head` không áp vào widget, popup/modal vẽ ở `document.body`
+thì phải tự mang CSS; click từ trong widget tới `document` bị đổi `target` thành host → dùng `event.composedPath()`.
 
 Khi push, CLI xác định đích từ `targetFormId`, formId nhận diện trong code hoặc metadata; sau đó kiểm tra registry và so sánh trạng thái với snapshot. Có thể chỉ đẩy code (`--code-only`) hoặc UI (`--ui-only`). UI được vá vào định nghĩa mới nhất của form, để giữ những field không thuộc custom UI local.
 

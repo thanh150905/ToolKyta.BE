@@ -55,6 +55,19 @@ test('collectCustomFields + fieldLocator: tìm field theo hashid trong meta, fal
   assert.equal(find('khong-co'), null);
 });
 
+test('collectCustomFields: field vỏ và field nhúng trùng key → thư mục riêng (hậu tố hashid)', () => {
+  const def = { components: [
+    { type: 'table_advance', renderMode: 'custom_code', hashid: 'A1', id: '0000own_table_advance-2' },
+    { type: 'table_advance', renderMode: 'custom_code', hashid: 'B2', id: '0000sub_table_advance-2' },
+    { type: 'table_advance', renderMode: 'custom_code', hashid: 'B2', id: '0000sub_table_advance-2' },
+  ] };
+  const fields = formDef.collectCustomFields(def);
+  assert.deepEqual(fields.map(f => f.dir), ['table_advance-2', 'table_advance-2__B2', 'table_advance-2__B2~2']);
+  const find = formDef.fieldLocator(fields, { customUI: fields.map(f => ({ dir: f.dir, hashid: f.hashid })) });
+  assert.equal(find('table_advance-2__B2'), fields[1]);
+  assert.equal(find('table_advance-2__B2~2'), fields[2]);    // cùng hashid → phân biệt theo thư mục
+});
+
 test('inspect.compare: changed / added / removed', () => {
   const r = inspect.compare({ 'a.js': '1', 'b.js': '2' }, { 'a.js': '9', 'c.js': '3' });
   assert.deepEqual(r, { changed: ['a.js'], added: ['c.js'], removed: ['b.js'] });

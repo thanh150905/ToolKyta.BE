@@ -103,6 +103,7 @@ function syncVariableArr(existing, def, formId) {
 function collectCustomFields(/** @type {any} */ def) {
   /** @type {CustomField[]} */ const acc = [];
   /** @type {Record<string, number>} */ const typeCount = {};
+  const usedDirs = new Set();
   (function walk(/** @type {any} */ node) {
     if (Array.isArray(node)) return node.forEach(walk);
     if (!node || typeof node !== 'object') return;
@@ -111,7 +112,12 @@ function collectCustomFields(/** @type {any} */ def) {
       const type = node.type || 'field';
       const index = (typeCount[type] = (typeCount[type] || 0) + 1);
       const key = elementKeyOf(node, type);
-      acc.push({ hashid: node.hashid || null, type, index, key, dir: safeName(key || `${type}-${index}`), node });
+      // Field form vỏ và field nhúng từ form con có thể trùng key (vd table_advance-2) → thư mục thêm hậu tố hashid
+      let dir = safeName(key || `${type}-${index}`);
+      if (usedDirs.has(dir)) dir = safeName(`${dir}__${node.hashid || index}`);
+      for (let i = 2; usedDirs.has(dir); i++) dir = safeName(`${dir.replace(/~\d+$/, '')}~${i}`);   // 2 bản nhúng cùng hashid
+      usedDirs.add(dir);
+      acc.push({ hashid: node.hashid || null, type, index, key, dir, node });
     }
     for (const k in node) walk(node[k]);
   })(def);
@@ -128,7 +134,14 @@ function fieldLocator(fields, meta) {
   const byHash = new Map(fields.filter(f => f.hashid).map(f => [f.hashid, f]));
   const byDir = new Map(fields.map(f => [f.dir, f]));
   const hashOf = new Map((meta?.customUI || []).map((/** @type {any} */ u) => [u.dir, u.hashid]));
-  return folder => byHash.get(hashOf.get(folder)) || byDir.get(folder) || null;
+  /** @type {Record<string, number>} */ const hashCount = {};
+  for (const f of fields) if (f.hashid) hashCount[f.hashid] = (hashCount[f.hashid] || 0) + 1;
+  // hashid trùng (2 bản nhúng cùng form con) → chỉ tên thư mục phân biệt được
+  return folder => {
+    const h = hashOf.get(folder);
+    if (h && hashCount[h] > 1) return byDir.get(folder) || null;
+    return byHash.get(h) || byDir.get(folder) || null;
+  };
 }
 
 // Container thuần bố cục — không mang cấu hình field đáng sửa (chỉ ôm components).
